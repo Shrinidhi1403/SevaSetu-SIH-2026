@@ -19,6 +19,7 @@ import {
   ShieldCheck,
   Building2,
   Stethoscope,
+  UserCheck,
   Sun,
   Moon,
   Compass,
@@ -30,6 +31,7 @@ export const Sidebar = ({ mobileOpen, setMobileOpen }) => {
     currentUser,
     switchRole,
     language,
+    setLanguage,
     toggleLanguage,
     t,
     theme,
@@ -38,7 +40,8 @@ export const Sidebar = ({ mobileOpen, setMobileOpen }) => {
     referrals,
     inventory,
     logout,
-    teleconsultCall
+    teleconsultCall,
+    num
   } = useApp();
 
   const [roleMenuOpen, setRoleMenuOpen] = useState(false);
@@ -50,16 +53,25 @@ export const Sidebar = ({ mobileOpen, setMobileOpen }) => {
   const roleDashboard = {
     to: getDashboardPath(),
     label: currentUser.role === 'doctor'
-      ? (language === 'hi' ? 'चिकित्सक डैशबोर्ड' : 'Doctor Dashboard')
+      ? (language === 'mr' ? 'वैद्यकीय अधिकारी डॅशबोर्ड' : language === 'hi' ? 'चिकित्सक डैशबोर्ड' : 'Doctor Dashboard')
       : currentUser.role === 'supervisor'
-      ? (language === 'hi' ? 'पर्यवेक्षक डैशबोर्ड' : 'Supervisor Dashboard')
-      : (language === 'hi' ? 'आशा कार्यकर्ता स्टेशन' : 'ASHA Field Station'),
-    icon: currentUser.role === 'doctor' ? Stethoscope : currentUser.role === 'supervisor' ? Building2 : HeartPulse,
+      ? (language === 'mr' ? 'पर्यवेक्षक डॅशबोर्ड' : language === 'hi' ? 'पर्यवेक्षक डैशबोर्ड' : 'Supervisor Dashboard')
+      : currentUser.role === 'patient'
+      ? (language === 'mr' ? 'माझा रुग्ण डॅशबोर्ड' : language === 'hi' ? 'मेरा मरीज़ डैशबोर्ड' : 'Patient Health Portal')
+      : (language === 'mr' ? 'आशा स्वयंसेविका स्टेशन' : language === 'hi' ? 'आशा कार्यकर्ता स्टेशन' : 'ASHA Field Station'),
+    icon: currentUser.role === 'doctor' ? Stethoscope : currentUser.role === 'supervisor' ? Building2 : currentUser.role === 'patient' ? UserCheck : HeartPulse,
     badge: 'My Role'
   };
 
   const navItems = [
     roleDashboard,
+    {
+      to: '/dashboard/patient',
+      label: t('patientDashboard'),
+      icon: UserCheck,
+      badge: language === 'mr' ? 'नागरिक' : language === 'hi' ? 'मरीज़' : 'Citizen',
+      badgeColor: 'bg-teal-100 text-teal-800 dark:bg-teal-950/70 dark:text-teal-300'
+    },
     {
       to: '/command-center',
       label: t('commandCenter'),
@@ -70,13 +82,13 @@ export const Sidebar = ({ mobileOpen, setMobileOpen }) => {
       to: '/patients',
       label: t('patientRecords'),
       icon: Users,
-      badge: '6 Active'
+      badge: `${num(6)} ${language === 'mr' ? 'सक्रिय' : language === 'hi' ? 'सक्रिय' : 'Active'}`
     },
     {
       to: '/teleconsult',
       label: t('teleconsultation'),
       icon: Video,
-      badge: teleconsultCall.isActive ? 'LIVE' : null,
+      badge: teleconsultCall.isActive ? (language === 'mr' ? 'थेट' : language === 'hi' ? 'लाइव' : 'LIVE') : null,
       pulse: teleconsultCall.isActive
     },
     {
@@ -89,14 +101,14 @@ export const Sidebar = ({ mobileOpen, setMobileOpen }) => {
       to: '/inventory',
       label: t('inventory'),
       icon: Package,
-      badge: lowStockCount > 0 ? `${lowStockCount} Low` : null,
+      badge: lowStockCount > 0 ? `${num(lowStockCount)} ${language === 'mr' ? 'कमी साठा' : language === 'hi' ? 'कम' : 'Low'}` : null,
       badgeColor: 'bg-amber-100 text-amber-800 dark:bg-amber-950/70 dark:text-amber-300'
     },
     {
       to: '/emergency',
       label: t('emergency'),
       icon: AlertOctagon,
-      badge: criticalCount > 0 ? `${criticalCount} Urgent` : null,
+      badge: criticalCount > 0 ? `${num(criticalCount)} ${language === 'mr' ? 'तातडीचे' : language === 'hi' ? 'आपातकाल' : 'Urgent'}` : null,
       badgeColor: 'bg-rose-100 text-rose-700 font-bold dark:bg-rose-950/70 dark:text-rose-300',
       pulse: criticalCount > 0
     },
@@ -132,14 +144,14 @@ export const Sidebar = ({ mobileOpen, setMobileOpen }) => {
             <div>
               <div className="flex items-center gap-1.5">
                 <span className="font-heading font-bold text-lg text-slate-900 dark:text-slate-100 tracking-tight">
-                  {language === 'hi' ? 'सेवासेतु' : 'SevaSetu'}
+                  {language === 'mr' ? 'सेवासेतू' : language === 'hi' ? 'सेवासेतु' : 'SevaSetu'}
                 </span>
                 <span className="text-[10px] px-1.5 py-0.5 font-bold uppercase rounded bg-teal-50 dark:bg-teal-950/70 text-teal-700 dark:text-teal-400 border border-teal-200 dark:border-teal-800">
                   NHM Ops
                 </span>
               </div>
               <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate max-w-[160px]">
-                {language === 'hi' ? 'ग्रामीण स्वास्थ्य संचालन' : 'Rural Health Operations'}
+                {language === 'mr' ? 'ग्रामीण आरोग्य संचालन' : language === 'hi' ? 'ग्रामीण स्वास्थ्य संचालन' : 'Rural Health Operations'}
               </p>
             </div>
           </div>
@@ -206,9 +218,11 @@ export const Sidebar = ({ mobileOpen, setMobileOpen }) => {
                     }`}
                   >
                     <div className="truncate">
-                      <div className="font-semibold text-[11px]">{role.title}</div>
+                      <div className="font-semibold text-[11px]">
+                        {language === 'mr' ? (role.titleMarathi || role.title) : language === 'hi' ? (role.titleHindi || role.title) : role.title}
+                      </div>
                       <div className={`text-[10px] ${currentUser.role === role.id ? 'text-teal-100' : 'text-slate-500 dark:text-slate-400'}`}>
-                        {role.name}
+                        {language === 'mr' && role.nameMarathi ? role.nameMarathi : language === 'hi' && role.nameHindi ? role.nameHindi : role.name}
                       </div>
                     </div>
                     {currentUser.role === role.id && (
@@ -225,13 +239,29 @@ export const Sidebar = ({ mobileOpen, setMobileOpen }) => {
           {/* Theme & Language & Network Status Bar */}
           <div className="mt-2.5 pt-2 border-t border-slate-200/80 dark:border-slate-700 flex items-center justify-between text-[11px]">
             <div className="flex items-center gap-1">
-              <button
-                onClick={toggleLanguage}
-                className="inline-flex items-center gap-1 text-slate-600 dark:text-slate-300 hover:text-teal-800 dark:hover:text-teal-400 font-semibold px-2 py-0.5 rounded bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 transition-colors text-[10px]"
-              >
-                <Globe className="w-3 h-3 text-teal-600" />
-                <span>{language === 'en' ? 'हिन्दी' : 'EN'}</span>
-              </button>
+              <div className="flex items-center gap-0.5 bg-white dark:bg-slate-700 p-0.5 rounded border border-slate-200 dark:border-slate-600 text-[10px] font-bold">
+                <button
+                  onClick={() => setLanguage('en')}
+                  className={`px-1.5 py-0.5 rounded transition-all ${language === 'en' ? 'bg-teal-700 text-white shadow-xs' : 'text-slate-600 dark:text-slate-300 hover:text-teal-700'}`}
+                  title="English"
+                >
+                  EN
+                </button>
+                <button
+                  onClick={() => setLanguage('hi')}
+                  className={`px-1.5 py-0.5 rounded transition-all ${language === 'hi' ? 'bg-teal-700 text-white shadow-xs' : 'text-slate-600 dark:text-slate-300 hover:text-teal-700'}`}
+                  title="हिन्दी"
+                >
+                  हिन्दी
+                </button>
+                <button
+                  onClick={() => setLanguage('mr')}
+                  className={`px-1.5 py-0.5 rounded transition-all ${language === 'mr' ? 'bg-teal-700 text-white shadow-xs' : 'text-slate-600 dark:text-slate-300 hover:text-teal-700'}`}
+                  title="मराठी"
+                >
+                  मराठी
+                </button>
+              </div>
 
               <button
                 onClick={toggleTheme}

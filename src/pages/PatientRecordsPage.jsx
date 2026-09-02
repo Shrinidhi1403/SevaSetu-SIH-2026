@@ -35,8 +35,22 @@ export const PatientRecordsPage = () => {
     addClinicalNote,
     currentUser,
     notify,
-    t
+    t,
+    language,
+    num,
+    locName,
+    locVillage
   } = useApp();
+
+  const getPatientName = (p) => {
+    if (!p) return "";
+    return locName(p);
+  };
+
+  const getPatientVillage = (p) => {
+    if (!p) return "";
+    return locVillage(p);
+  };
 
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
@@ -114,7 +128,7 @@ export const PatientRecordsPage = () => {
             <div className="flex items-center justify-between">
               <h3 className="font-heading font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center gap-2">
                 <Users className="w-4 h-4 text-teal-700 dark:text-teal-400" />
-                <span>Patient Cohort ({filteredPatients.length})</span>
+                <span>{language === 'mr' ? 'रुग्ण नोंदवही' : language === 'hi' ? 'मरीज़ सूची' : 'Patient Cohort'} ({filteredPatients.length})</span>
               </h3>
               <span className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">
                 Pune-Satara Rural
@@ -128,7 +142,7 @@ export const PatientRecordsPage = () => {
                 type="text"
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                placeholder="Search ABHA ID, name, village..."
+                placeholder={t('searchPlaceholder')}
                 className="w-full pl-9 pr-3 py-2 text-xs rounded-lg border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-1 focus:ring-teal-600 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100"
               />
             </div>
@@ -187,13 +201,13 @@ export const PatientRecordsPage = () => {
                   <div className="flex items-start justify-between gap-1">
                     <div>
                       <div className="font-heading font-bold text-xs text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
-                        <span>{p.name}</span>
+                        <span>{getPatientName(p)}</span>
                         <span className="text-[10px] font-normal text-slate-500 dark:text-slate-400">
-                          ({p.age}y, {p.gender})
+                          ({num(p.age)} {language === 'mr' ? 'वर्षे' : language === 'hi' ? 'वर्ष' : 'y'}, {language === 'mr' ? (p.gender === 'Female' ? 'स्त्री' : 'पुरुष') : language === 'hi' ? (p.gender === 'Female' ? 'महिला' : 'पुरुष') : p.gender})
                         </span>
                       </div>
                       <div className="text-[10px] font-mono text-slate-500 dark:text-slate-400 mt-0.5">
-                        ABHA: {p.abhaId}
+                        ABHA: {num(p.abhaId)}
                       </div>
                     </div>
                     <Badge
@@ -235,10 +249,10 @@ export const PatientRecordsPage = () => {
                   <div>
                     <div className="flex flex-wrap items-center gap-2">
                       <h2 className="font-heading text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100">
-                        {selectedPatient.name}
+                        {getPatientName(selectedPatient)}
                       </h2>
                       <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
-                        Blood: {selectedPatient.bloodGroup}
+                        {t('bloodGroup')}: {num(selectedPatient.bloodGroup)}
                       </span>
                       <Badge
                         status={selectedPatient.riskColor}
@@ -250,19 +264,19 @@ export const PatientRecordsPage = () => {
 
                     <div className="mt-1.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500 dark:text-slate-400">
                       <span className="font-mono text-slate-700 dark:text-slate-300 font-medium">
-                        ABHA: {selectedPatient.abhaId}
+                        ABHA: {num(selectedPatient.abhaId)}
                       </span>
                       <span>•</span>
-                      <span>{selectedPatient.age} Years, {selectedPatient.gender}</span>
+                      <span>{num(selectedPatient.age)} {language === 'mr' ? 'वर्षे' : language === 'hi' ? 'वर्ष' : 'Years'}, {language === 'mr' ? (selectedPatient.gender === 'Female' ? 'स्त्री' : 'पुरुष') : language === 'hi' ? (selectedPatient.gender === 'Female' ? 'महिला' : 'पुरुष') : selectedPatient.gender}</span>
                       <span>•</span>
                       <span className="flex items-center gap-1">
                         <Building2 className="w-3.5 h-3.5 text-slate-400" />
-                        {selectedPatient.primaryPhc} ({selectedPatient.village})
+                        {locName(selectedPatient.primaryPhc)} ({getPatientVillage(selectedPatient)})
                       </span>
                       <span>•</span>
                       <span className="flex items-center gap-1">
                         <UserCheck className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
-                        ASHA: {selectedPatient.assignedAsha}
+                        ASHA: {locName(selectedPatient.assignedAsha)}
                       </span>
                     </div>
 
@@ -322,33 +336,33 @@ export const PatientRecordsPage = () => {
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
                   <div className="p-2.5 rounded-lg border bg-slate-50 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700 text-center">
-                    <div className="text-[10px] font-semibold uppercase text-slate-500 dark:text-slate-400">Blood Pressure</div>
+                    <div className="text-[10px] font-semibold uppercase text-slate-500 dark:text-slate-400">{t('bloodPressure')}</div>
                     <div className="font-heading text-base font-bold text-slate-900 dark:text-slate-100 mt-0.5">
-                      {selectedPatient.latestVitals.bp}
+                      {num(selectedPatient.latestVitals.bp)}
                     </div>
-                    <div className="text-[9px] font-medium text-slate-500">Target &lt;130/80</div>
+                    <div className="text-[9px] font-medium text-slate-500">&lt; {num("130/80")}</div>
                   </div>
 
                   <div className="p-2.5 rounded-lg border bg-slate-50 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700 text-center">
-                    <div className="text-[10px] font-semibold uppercase text-slate-500 dark:text-slate-400">SpO2 Oxygen</div>
+                    <div className="text-[10px] font-semibold uppercase text-slate-500 dark:text-slate-400">{t('oxygenLevel')}</div>
                     <div className="font-heading text-base font-bold text-slate-900 dark:text-slate-100 mt-0.5">
-                      {selectedPatient.latestVitals.spo2}
+                      {num(selectedPatient.latestVitals.spo2)}
                     </div>
                     <div className="text-[9px] font-medium text-slate-500">Room Air</div>
                   </div>
 
                   <div className="p-2.5 rounded-lg border bg-slate-50 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700 text-center">
-                    <div className="text-[10px] font-semibold uppercase text-slate-500 dark:text-slate-400">Heart Rate</div>
+                    <div className="text-[10px] font-semibold uppercase text-slate-500 dark:text-slate-400">{t('pulseRate')}</div>
                     <div className="font-heading text-base font-bold text-slate-900 dark:text-slate-100 mt-0.5">
-                      {selectedPatient.latestVitals.pulse}
+                      {num(selectedPatient.latestVitals.pulse)}
                     </div>
                     <div className="text-[9px] font-medium text-slate-500">Radial Pulse</div>
                   </div>
 
                   <div className="p-2.5 rounded-lg border bg-slate-50 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700 text-center">
-                    <div className="text-[10px] font-semibold uppercase text-slate-500 dark:text-slate-400">Blood Sugar</div>
+                    <div className="text-[10px] font-semibold uppercase text-slate-500 dark:text-slate-400">{t('bloodSugar')}</div>
                     <div className="font-heading text-sm font-bold text-slate-900 dark:text-slate-100 mt-0.5 truncate">
-                      {selectedPatient.latestVitals.bloodSugar}
+                      {num(selectedPatient.latestVitals.bloodSugar)}
                     </div>
                     <div className="text-[9px] font-medium text-slate-500">Glucometer</div>
                   </div>
@@ -356,7 +370,7 @@ export const PatientRecordsPage = () => {
                   <div className="p-2.5 rounded-lg border bg-slate-50 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700 text-center">
                     <div className="text-[10px] font-semibold uppercase text-slate-500 dark:text-slate-400">Temperature</div>
                     <div className="font-heading text-base font-bold text-slate-900 dark:text-slate-100 mt-0.5">
-                      {selectedPatient.latestVitals.temp}
+                      {num(selectedPatient.latestVitals.temp)}
                     </div>
                     <div className="text-[9px] font-medium text-slate-500">Digital Oral</div>
                   </div>
@@ -364,7 +378,7 @@ export const PatientRecordsPage = () => {
                   <div className="p-2.5 rounded-lg border bg-slate-50 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700 text-center">
                     <div className="text-[10px] font-semibold uppercase text-slate-500 dark:text-slate-400">Growth / BMI</div>
                     <div className="font-heading text-sm font-bold text-slate-900 dark:text-slate-100 mt-0.5 truncate">
-                      {selectedPatient.latestVitals.bmi}
+                      {num(selectedPatient.latestVitals.bmi)}
                     </div>
                     <div className="text-[9px] font-medium text-slate-500">Anthropometry</div>
                   </div>

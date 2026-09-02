@@ -21,6 +21,7 @@ export const Header = ({ onOpenMobileSidebar, title, subtitle }) => {
     currentUser,
     switchRole,
     language,
+    setLanguage,
     toggleLanguage,
     theme,
     toggleTheme,
@@ -29,7 +30,10 @@ export const Header = ({ onOpenMobileSidebar, title, subtitle }) => {
     referrals,
     teleconsultCall,
     patients,
-    setSelectedPatientId
+    setSelectedPatientId,
+    num,
+    locName,
+    locVillage
   } = useApp();
 
   const navigate = useNavigate();
@@ -102,7 +106,7 @@ export const Header = ({ onOpenMobileSidebar, title, subtitle }) => {
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
               }`}
             >
-              Doctor
+              {language === 'mr' ? 'वैद्यकीय अधिकारी' : language === 'hi' ? 'चिकित्सक' : 'Doctor'}
             </button>
             <button
               onClick={() => handleSwitchPersona('supervisor')}
@@ -112,7 +116,7 @@ export const Header = ({ onOpenMobileSidebar, title, subtitle }) => {
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
               }`}
             >
-              Supervisor
+              {language === 'mr' ? 'पर्यवेक्षक' : language === 'hi' ? 'पर्यवेक्षक' : 'Supervisor'}
             </button>
             <button
               onClick={() => handleSwitchPersona('asha')}
@@ -122,7 +126,55 @@ export const Header = ({ onOpenMobileSidebar, title, subtitle }) => {
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
               }`}
             >
-              ASHA Worker
+              {language === 'mr' ? 'आशा स्वयंसेविका' : language === 'hi' ? 'आशा' : 'ASHA Worker'}
+            </button>
+            <button
+              onClick={() => handleSwitchPersona('patient')}
+              className={`px-2 py-1 rounded font-medium transition-all ${
+                currentUser.role === 'patient'
+                  ? 'bg-white dark:bg-slate-700 text-teal-800 dark:text-teal-300 shadow-xs font-semibold'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
+              }`}
+            >
+              {language === 'mr' ? 'रुग्ण / नागरिक' : language === 'hi' ? 'मरीज़ / नागरिक' : 'Patient'}
+            </button>
+          </div>
+
+          {/* Dedicated 3-Way Multilingual Selector in Header */}
+          <div className="flex items-center gap-0.5 bg-slate-100/90 dark:bg-slate-800 p-1 rounded-lg border border-slate-200 dark:border-slate-700 text-[11px]">
+            <Globe className="w-3.5 h-3.5 text-teal-600 ml-1 mr-0.5 shrink-0 hidden sm:inline" />
+            <button
+              onClick={() => setLanguage('en')}
+              className={`px-1.5 py-0.5 rounded font-bold transition-all text-[10px] ${
+                language === 'en'
+                  ? 'bg-teal-700 text-white shadow-xs'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
+              }`}
+              title="English"
+            >
+              EN
+            </button>
+            <button
+              onClick={() => setLanguage('hi')}
+              className={`px-1.5 py-0.5 rounded font-bold transition-all text-[10px] ${
+                language === 'hi'
+                  ? 'bg-teal-700 text-white shadow-xs'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
+              }`}
+              title="हिन्दी"
+            >
+              हिन्दी
+            </button>
+            <button
+              onClick={() => setLanguage('mr')}
+              className={`px-1.5 py-0.5 rounded font-bold transition-all text-[10px] ${
+                language === 'mr'
+                  ? 'bg-teal-700 text-white shadow-xs'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
+              }`}
+              title="मराठी"
+            >
+              मराठी
             </button>
           </div>
 
@@ -145,7 +197,7 @@ export const Header = ({ onOpenMobileSidebar, title, subtitle }) => {
             >
               <AlertTriangle className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400 animate-bounce" />
               <span>
-                {criticalReferrals.length} Critical 108
+                {num(criticalReferrals.length)} {language === 'mr' ? '१०८ तातडीचे' : language === 'hi' ? '108 आपातकालीन' : 'Critical 108'}
               </span>
             </button>
           )}
@@ -272,13 +324,13 @@ export const Header = ({ onOpenMobileSidebar, title, subtitle }) => {
                     >
                       <div>
                         <div className="font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-                          <span>{p.name}</span>
+                          <span>{locName(p)}</span>
                           <span className="text-[10px] font-mono bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-slate-600 dark:text-slate-400">
-                            ABHA: {p.abhaId}
+                            ABHA: {num(p.abhaId)}
                           </span>
                         </div>
                         <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
-                          {p.age} yrs • {p.gender} • {p.village} • {p.primaryPhc}
+                          {num(p.age)} {language === 'mr' ? 'वर्षे' : language === 'hi' ? 'वर्ष' : 'yrs'} • {locVillage(p)} • {locName(p.primaryPhc)}
                         </div>
                       </div>
                       <span className="text-[10px] font-medium px-2 py-0.5 rounded bg-teal-50 dark:bg-teal-950 text-teal-700 dark:text-teal-400">

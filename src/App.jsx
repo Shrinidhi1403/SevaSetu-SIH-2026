@@ -15,6 +15,7 @@ import { AshaFieldOverviewPage } from './pages/AshaFieldOverviewPage';
 import { DoctorDashboard } from './pages/dashboards/DoctorDashboard';
 import { SupervisorDashboard } from './pages/dashboards/SupervisorDashboard';
 import { AshaDashboard } from './pages/dashboards/AshaDashboard';
+import { PatientDashboard } from './pages/dashboards/PatientDashboard';
 
 // Route Guard
 const ProtectedRoute = ({ children }) => {
@@ -34,7 +35,7 @@ const DynamicHomeRedirect = () => {
 export const App = () => {
   return (
     <AppProvider>
-      <BrowserRouter>
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
         <Routes>
           {/* Public Login & Onboarding */}
           <Route path="/login" element={<LoginPage />} />
@@ -55,6 +56,8 @@ export const App = () => {
             <Route path="dashboard/doctor" element={<DoctorDashboard />} />
             <Route path="dashboard/supervisor" element={<SupervisorDashboard />} />
             <Route path="dashboard/asha" element={<AshaDashboard />} />
+            <Route path="dashboard/patient" element={<PatientDashboard />} />
+            <Route path="patient-portal" element={<PatientDashboard />} />
 
             {/* Core Modules */}
             <Route path="command-center" element={<CommandCenterPage />} />

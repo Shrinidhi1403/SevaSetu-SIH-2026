@@ -38,7 +38,9 @@ export const InventoryPage = () => {
     scheduleEquipmentService,
     facilities,
     notify,
-    theme
+    theme,
+    language,
+    t
   } = useApp();
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -95,7 +97,7 @@ export const InventoryPage = () => {
             </span>
           </div>
           <h2 className="font-heading text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 mt-1">
-            District Medical Inventory & Equipment Registry
+            {language === 'mr' ? 'जिल्हा औषध साठा व वैद्यकीय उपकरण नोंदवही' : language === 'hi' ? 'जिला दवा भंडार एवं चिकित्सा उपकरण रजिस्ट्री' : 'District Medical Inventory & Equipment Registry'}
           </h2>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
             Real-time stock buffer telemetry, cold chain monitoring, and automated DVDMS indenting.
@@ -110,7 +112,7 @@ export const InventoryPage = () => {
             className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors"
           >
             <RefreshCw className="w-3.5 h-3.5" />
-            <span>Sync Cold Chain</span>
+            <span>{language === 'mr' ? 'कोल्ड चेन सिंक' : language === 'hi' ? 'कोल्ड चेन सिंक' : 'Sync Cold Chain'}</span>
           </button>
 
           <button
@@ -120,7 +122,7 @@ export const InventoryPage = () => {
             className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-lg bg-teal-700 hover:bg-teal-800 text-white shadow-sm transition-colors"
           >
             <Plus className="w-4 h-4" />
-            <span>Create Indent</span>
+            <span>{language === 'mr' ? 'नवीन मागणी (Indent)' : language === 'hi' ? 'नया इंडेंट बनाएँ' : 'Create Indent'}</span>
           </button>
         </div>
       </div>

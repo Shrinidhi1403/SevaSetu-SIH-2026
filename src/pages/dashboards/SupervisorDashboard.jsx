@@ -28,7 +28,8 @@ export const SupervisorDashboard = () => {
     referrals,
     inventory,
     ashaWorkers,
-    notify
+    notify,
+    language
   } = useApp();
 
   const navigate = useNavigate();
@@ -65,15 +66,15 @@ export const SupervisorDashboard = () => {
           <div>
             <div className="flex items-center gap-2">
               <span className="text-[11px] font-bold tracking-wide uppercase px-2 py-0.5 rounded bg-blue-700/60 border border-blue-400/30">
-                District Health Office (DHO) • Cluster Command
+                {language === 'mr' ? 'जिल्हा आरोग्य कार्यालय (DHO) • विभागीय नियंत्रण कक्ष' : language === 'hi' ? 'जिला स्वास्थ्य कार्यालय (DHO) • क्षेत्रीय नियंत्रण कक्ष' : 'District Health Office (DHO) • Cluster Command'}
               </span>
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
             </div>
             <h2 className="font-heading text-xl sm:text-2xl font-bold tracking-tight mt-1">
-              Welcome, {currentUser.name}
+              {language === 'mr' ? `स्वागत आहे, ${currentUser.name}` : language === 'hi' ? `स्वागत है, ${currentUser.name}` : `Welcome, ${currentUser.name}`}
             </h2>
             <p className="text-blue-200 text-xs mt-0.5">
-              Regional Supervisor • Satara & Pune Rural Division • 6 Facilities, 4 ASHA Clusters Under Watch
+              {language === 'mr' ? 'विभागीय आरोग्य पर्यवेक्षक • सातारा व पुणे ग्रामीण विभाग' : 'Regional Supervisor • Satara & Pune Rural Division • 6 Facilities, 4 ASHA Clusters'}
             </p>
           </div>
         </div>
@@ -84,7 +85,7 @@ export const SupervisorDashboard = () => {
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs shadow-md transition-all"
           >
             <Share2 className="w-4 h-4" />
-            <span>Reallocate Medicine Stock</span>
+            <span>{language === 'mr' ? 'औषध साठा पुनर्वितरण' : language === 'hi' ? 'दवा स्टॉक पुनर्वितरण' : 'Reallocate Medicine Stock'}</span>
           </button>
 
           <button
@@ -92,7 +93,7 @@ export const SupervisorDashboard = () => {
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white text-slate-900 font-bold text-xs shadow-md hover:bg-slate-100 transition-all"
           >
             <Building2 className="w-4 h-4 text-blue-600" />
-            <span>Regional Map</span>
+            <span>{language === 'mr' ? 'विभागीय नकाशा' : language === 'hi' ? 'क्षेत्रीय मानचित्र' : 'Regional Map'}</span>
           </button>
         </div>
       </div>

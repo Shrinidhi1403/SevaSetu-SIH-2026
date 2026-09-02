@@ -149,10 +149,11 @@ export const TeleconsultationPage = () => {
 
           <button
             onClick={toggleLanguage}
-            className="flex items-center gap-1 px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-medium text-slate-700 dark:text-slate-300 shadow-xs"
+            className="flex items-center gap-1 px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300 shadow-xs"
+            title="Toggle Language (EN / मराठी / हिन्दी)"
           >
             <Globe className="w-3.5 h-3.5 text-teal-600" />
-            <span>{language === 'en' ? 'हिन्दी' : 'English'}</span>
+            <span>{language === 'mr' ? 'मराठी' : language === 'hi' ? 'हिन्दी' : 'English'}</span>
           </button>
         </div>
       </div>

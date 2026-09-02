@@ -29,7 +29,9 @@ export const AshaFieldOverviewPage = () => {
     outreachEvents,
     logAshaVisit,
     notify,
-    currentUser
+    currentUser,
+    language,
+    t
   } = useApp();
 
   const [showLogVisitModal, setShowLogVisitModal] = useState(false);
@@ -70,7 +72,7 @@ export const AshaFieldOverviewPage = () => {
             </span>
           </div>
           <h2 className="font-heading text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 mt-1">
-            ASHA Field Network & Doorstep Surveillance
+            {language === 'mr' ? 'आशा स्वयंसेविका नेटवर्क व घरोघरी आरोग्य देखरेख' : language === 'hi' ? 'आशा कार्यकर्ता नेटवर्क एवं घर-घर निगरानी' : 'ASHA Field Network & Doorstep Surveillance'}
           </h2>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
             Real-time synchronization of doorstep NCD screening, maternal PNC check-ins, and immunization drives.
@@ -85,7 +87,7 @@ export const AshaFieldOverviewPage = () => {
             className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors"
           >
             <RefreshCw className="w-3.5 h-3.5" />
-            <span>Force Field Sync</span>
+            <span>{language === 'mr' ? 'फील्ड सिंक' : language === 'hi' ? 'फील्ड सिंक' : 'Force Field Sync'}</span>
           </button>
 
           <button
@@ -93,7 +95,7 @@ export const AshaFieldOverviewPage = () => {
             className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-lg bg-teal-700 hover:bg-teal-800 text-white shadow-sm transition-colors"
           >
             <Plus className="w-4 h-4" />
-            <span>Log Check-in</span>
+            <span>{language === 'mr' ? 'आरोग्य भेट नोंदवा' : language === 'hi' ? 'भेंट दर्ज करें' : 'Log Check-in'}</span>
           </button>
         </div>
       </div>

@@ -30,7 +30,8 @@ export const DoctorDashboard = () => {
     setSelectedPatientId,
     teleconsultCall,
     notify,
-    t
+    t,
+    language
   } = useApp();
 
   const navigate = useNavigate();
@@ -108,15 +109,15 @@ export const DoctorDashboard = () => {
           <div>
             <div className="flex items-center gap-2">
               <span className="text-[11px] font-bold tracking-wide uppercase px-2 py-0.5 rounded bg-teal-600/60 border border-teal-400/30">
-                Primary Health Centre • Clinical Station
+                {language === 'mr' ? 'प्राथमिक आरोग्य केंद्र • क्लिनिकल स्टेशन' : language === 'hi' ? 'प्राथमिक स्वास्थ्य केंद्र • क्लिनिकल स्टेशन' : 'Primary Health Centre • Clinical Station'}
               </span>
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
             </div>
             <h2 className="font-heading text-xl sm:text-2xl font-bold tracking-tight mt-1">
-              Welcome, {currentUser.name}
+              {language === 'mr' ? `स्वागत आहे, ${currentUser.name}` : language === 'hi' ? `स्वागत है, ${currentUser.name}` : `Welcome, ${currentUser.name}`}
             </h2>
             <p className="text-teal-100 text-xs mt-0.5">
-              {currentUser.roleTitle} • {currentUser.facility} • Daily OPD Active
+              {currentUser.roleTitle} • {currentUser.facility} • {language === 'mr' ? 'दैनिक बाह्यरुग्ण (OPD) सक्रिय' : 'Daily OPD Active'}
             </p>
           </div>
         </div>
@@ -127,7 +128,7 @@ export const DoctorDashboard = () => {
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white text-teal-800 font-bold text-xs shadow-md hover:bg-teal-50 transition-all"
           >
             <Video className="w-4 h-4 text-teal-700 animate-pulse" />
-            <span>Join Live Tele-OPD</span>
+            <span>{language === 'mr' ? 'थेट टेलि-ओपीडी सुरू करा' : language === 'hi' ? 'लाइव टेली-ओपीडी शुरू करें' : 'Join Live Tele-OPD'}</span>
           </button>
 
           <button
@@ -135,7 +136,7 @@ export const DoctorDashboard = () => {
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-md transition-all"
           >
             <AlertTriangle className="w-4 h-4" />
-            <span>Emergency Escalations</span>
+            <span>{language === 'mr' ? '१०८ आपत्कालीन रेफरल' : language === 'hi' ? '108 आपातकालीन रेफरल' : 'Emergency Escalations'}</span>
           </button>
         </div>
       </div>

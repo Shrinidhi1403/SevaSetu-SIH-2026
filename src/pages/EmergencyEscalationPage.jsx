@@ -28,7 +28,8 @@ export const EmergencyEscalationPage = () => {
     notify,
     facilities,
     currentUser,
-    t
+    t,
+    language
   } = useApp();
 
   const [selectedReferralId, setSelectedReferralId] = useState(referrals[0]?.id || "REF-2026-881");
@@ -93,7 +94,7 @@ export const EmergencyEscalationPage = () => {
               </span>
             </div>
             <h2 className="font-heading text-xl sm:text-2xl font-bold text-rose-950 dark:text-rose-100 mt-1">
-              Critical Emergency Escalation & Tele-Triage Desk
+              {language === 'mr' ? '१०८ आपत्कालीन रेफरल व ट्रॅकिंग कक्ष' : language === 'hi' ? '108 आपातकालीन रेफरल एवं ट्रैकिंग डेस्क' : 'Critical Emergency Escalation & Tele-Triage Desk'}
             </h2>
             <p className="text-xs text-rose-800 dark:text-rose-300 mt-0.5">
               Golden-hour acute stroke, STEMI, and obstetric emergency dispatch with live telemetry link.
@@ -107,7 +108,7 @@ export const EmergencyEscalationPage = () => {
             className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold rounded-lg bg-rose-600 hover:bg-rose-700 text-white shadow-sm transition-colors"
           >
             <PhoneCall className="w-4 h-4" />
-            <span>Dial 108 Dispatch HQ</span>
+            <span>{language === 'mr' ? '१०८ मुख्यालय कॉल करा' : language === 'hi' ? '108 मुख्यालय कॉल करें' : 'Dial 108 Dispatch HQ'}</span>
           </a>
         </div>
       </div>

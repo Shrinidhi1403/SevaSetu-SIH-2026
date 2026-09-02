@@ -12,7 +12,14 @@ import {
   RECENT_FIELD_UPLOADS,
   UPCOMING_OUTREACH
 } from '../data/mockData';
-import { translations } from '../utils/translations';
+import {
+  translations,
+  toDevanagariDigits,
+  formatDigits,
+  localizeName,
+  localizeVillage,
+  NAME_DICTIONARY
+} from '../utils/translations';
 import { api } from '../services/api';
 
 const AppContext = createContext();
@@ -51,10 +58,24 @@ export const AppProvider = ({ children }) => {
     return saved ? JSON.parse(saved) : INITIAL_USER;
   });
 
-  // Language state: 'en' | 'hi'
+  // Language state: 'en' | 'hi' | 'mr'
   const [language, setLanguage] = useState(() => {
     return localStorage.getItem('sevasetu_lang') || 'en';
   });
+
+  // Daily Medication Tracker State (Patient Dashboard)
+  const [takenPills, setTakenPills] = useState(() => {
+    const saved = localStorage.getItem('sevasetu_pills');
+    return saved ? JSON.parse(saved) : { "PAT-001-0": true };
+  });
+
+  const togglePillTaken = (pillKey) => {
+    setTakenPills(prev => {
+      const updated = { ...prev, [pillKey]: !prev[pillKey] };
+      localStorage.setItem('sevasetu_pills', JSON.stringify(updated));
+      return updated;
+    });
+  };
 
   // Operational Data State
   const [facilities, setFacilities] = useState(FACILITIES);
@@ -150,11 +171,21 @@ export const AppProvider = ({ children }) => {
   };
 
   const t = (key) => {
-    return translations[language]?.[key] || translations['en']?.[key] || key;
+    return (
+      translations[language]?.[key] ||
+      translations['mr']?.[key] ||
+      translations['hi']?.[key] ||
+      translations['en']?.[key] ||
+      key
+    );
   };
 
   const toggleLanguage = () => {
-    setLanguage(prev => (prev === 'en' ? 'hi' : 'en'));
+    setLanguage(prev => {
+      if (prev === 'en') return 'mr';
+      if (prev === 'mr') return 'hi';
+      return 'en';
+    });
   };
 
   // Get persona dashboard path
@@ -166,27 +197,38 @@ export const AppProvider = ({ children }) => {
         return '/dashboard/supervisor';
       case 'asha':
         return '/dashboard/asha';
+      case 'patient':
+        return '/dashboard/patient';
       default:
         return '/command-center';
     }
   };
 
-  // Switch between Doctor, Supervisor, ASHA roles
+  // Switch between Doctor, Supervisor, ASHA, and Patient roles
   const switchRole = (roleId) => {
     const found = AVAILABLE_ROLES.find(r => r.id === roleId);
     if (found) {
       const updated = {
         id: `usr_${found.id}_01`,
         name: found.name,
+        nameHindi: found.nameHindi || found.name,
+        nameMarathi: found.nameMarathi || found.name,
         role: found.id,
         roleTitle: found.title,
+        titleHindi: found.titleHindi || found.title,
+        titleMarathi: found.titleMarathi || found.title,
         facility: found.facility,
+        facilityHindi: found.facilityHindi || found.facility,
+        facilityMarathi: found.facilityMarathi || found.facility,
         district: "Pune Rural Division",
         phone: found.phone,
         email: `${found.id}@health.gov.in`,
         avatar: found.avatar,
         badge: found.title
       };
+      if (found.id === 'patient') {
+        setSelectedPatientId("PAT-001");
+      }
       setCurrentUser(updated);
       notify("Persona Changed", `Switched to ${found.title} (${found.name})`, 'info');
     }
@@ -197,9 +239,15 @@ export const AppProvider = ({ children }) => {
     const newUser = {
       id: `usr_${found.id}_01`,
       name: found.name,
+      nameHindi: found.nameHindi || found.name,
+      nameMarathi: found.nameMarathi || found.name,
       role: found.id,
       roleTitle: found.title,
+      titleHindi: found.titleHindi || found.title,
+      titleMarathi: found.titleMarathi || found.title,
       facility: found.facility,
+      facilityHindi: found.facilityHindi || found.facility,
+      facilityMarathi: found.facilityMarathi || found.facility,
       district: "Pune Rural Division",
       phone: phone || found.phone,
       email: `${found.id}@health.gov.in`,
@@ -371,6 +419,29 @@ export const AppProvider = ({ children }) => {
     api.logAshaVisit(newUpload).catch(() => {});
   };
 
+  // Dynamic localized currentUser that reflects active language
+  const localizedCurrentUser = {
+    ...currentUser,
+    name: language === 'mr' ? (currentUser.nameMarathi || localizeName(currentUser.name, 'mr'))
+         : language === 'hi' ? (currentUser.nameHindi || localizeName(currentUser.name, 'hi'))
+         : currentUser.name,
+    facility: language === 'mr' ? (currentUser.facilityMarathi || localizeName(currentUser.facility, 'mr'))
+            : language === 'hi' ? (currentUser.facilityHindi || localizeName(currentUser.facility, 'hi'))
+            : currentUser.facility,
+    roleTitle: language === 'mr' ? (currentUser.titleMarathi || currentUser.roleTitle)
+             : language === 'hi' ? (currentUser.titleHindi || currentUser.roleTitle)
+             : currentUser.roleTitle
+  };
+
+  // Digits & numerals localization helper: converts 0-9 to ०-९ in Marathi and Hindi
+  const num = (input) => formatDigits(input, language);
+
+  // Name localization helper for persons, doctors, facilities, and ASHAs
+  const locName = (entity) => localizeName(entity, language);
+
+  // Village / locality localization helper
+  const locVillage = (entity) => localizeVillage(entity, language);
+
   return (
     <AppContext.Provider
       value={{
@@ -379,12 +450,18 @@ export const AppProvider = ({ children }) => {
         isLoggedIn,
         login,
         logout,
-        currentUser,
+        currentUser: localizedCurrentUser,
+        rawCurrentUser: currentUser,
         switchRole,
         language,
         setLanguage,
         toggleLanguage,
         t,
+        num,
+        formatDigits: num,
+        locName,
+        locVillage,
+        toDevanagariDigits,
         getDashboardPath,
         facilities,
         setFacilities,
@@ -414,7 +491,9 @@ export const AppProvider = ({ children }) => {
         removeNotification,
         notify,
         updatePatientVitals,
-        addClinicalNote
+        addClinicalNote,
+        takenPills,
+        togglePillTaken
       }}
     >
       {children}

@@ -29,7 +29,8 @@ export const AshaDashboard = () => {
     patients,
     setSelectedPatientId,
     logAshaVisit,
-    notify
+    notify,
+    language
   } = useApp();
 
   const navigate = useNavigate();
@@ -131,15 +132,15 @@ export const AshaDashboard = () => {
           <div>
             <div className="flex items-center gap-2">
               <span className="text-[11px] font-bold tracking-wide uppercase px-2 py-0.5 rounded bg-emerald-700/70 border border-emerald-400/30">
-                Grassroots Frontline Health Mobilizer
+                {language === 'mr' ? 'आशा स्वयंसेविका (ग्राम आरोग्य मित्र)' : language === 'hi' ? 'आशा कार्यकर्ता (ग्राम स्वास्थ्य मित्र)' : 'Grassroots Frontline Health Mobilizer'}
               </span>
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
             </div>
             <h2 className="font-heading text-xl sm:text-2xl font-bold tracking-tight mt-1">
-              Namaste, {currentUser.name}
+              {language === 'mr' ? `सस्नेह नमस्कार, ${currentUser.name}` : language === 'hi' ? `नमस्ते, ${currentUser.name}` : `Namaste, ${currentUser.name}`}
             </h2>
             <p className="text-emerald-100 text-xs mt-0.5">
-              Cluster: {currentUser.facility} • 284 Households Assigned • Field Day Active
+              {language === 'mr' ? `क्लस्टर: ${currentUser.facility} • २८४ कुटुंबे नियुक्त` : `Cluster: ${currentUser.facility} • 284 Households Assigned • Field Day Active`}
             </p>
           </div>
         </div>
@@ -160,7 +161,7 @@ export const AshaDashboard = () => {
               {isSyncing
                 ? "Syncing Cloud..."
                 : offlineRecordsCount > 0
-                ? `Sync Offline Queue (${offlineRecordsCount})`
+                ? (language === 'mr' ? `ऑफलाइन नोंदी सिंक करा (${offlineRecordsCount})` : language === 'hi' ? `ऑफ़लाइन रिकॉर्ड सिंक करें (${offlineRecordsCount})` : `Sync Offline Queue (${offlineRecordsCount})`)
                 : "All Records Synced ✓"}
             </span>
           </button>

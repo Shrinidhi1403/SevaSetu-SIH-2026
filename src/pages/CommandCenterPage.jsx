@@ -31,7 +31,10 @@ export const CommandCenterPage = () => {
     dispatchAmbulance,
     notify,
     t,
-    language
+    language,
+    num,
+    locName,
+    locVillage
   } = useApp();
 
   const navigate = useNavigate();
@@ -65,7 +68,7 @@ export const CommandCenterPage = () => {
             </span>
           </div>
           <h2 className="font-heading text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 mt-1">
-            {language === 'hi' ? 'क्षेत्रीय स्वास्थ्य नियंत्रण कक्ष' : 'Regional Command & Control Center'}
+            {language === 'mr' ? 'विभागीय आरोग्य नियंत्रण कक्ष (कमांड सेंटर)' : language === 'hi' ? 'क्षेत्रीय स्वास्थ्य नियंत्रण कक्ष' : 'Regional Command & Control Center'}
           </h2>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
             Real-time telemetry across 6 PHCs/CHCs, 14 ASHA sub-clusters, and 108 Emergency ambulance fleet.
@@ -97,7 +100,7 @@ export const CommandCenterPage = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
           title={t('activeFacilities')}
-          value={`${totalFacilities} Active`}
+          value={`${num(totalFacilities)} ${language === 'mr' ? 'सक्रिय' : language === 'hi' ? 'सक्रिय' : 'Active'}`}
           subtitle="4 Optimal • 1 Strained • 1 Critical"
           icon={Building2}
           trend="+1 Sub-center Online"
@@ -107,7 +110,7 @@ export const CommandCenterPage = () => {
 
         <StatCard
           title={t('criticalEscalations')}
-          value={criticalCount}
+          value={num(criticalCount)}
           subtitle="STEMI & High-Risk Maternal in transit"
           icon={AlertTriangle}
           trend="2 Under Active ALS Transit"
@@ -117,7 +120,7 @@ export const CommandCenterPage = () => {
 
         <StatCard
           title={t('avgWaitTime')}
-          value={`${avgWaitTime} mins`}
+          value={`${num(avgWaitTime)} ${language === 'mr' ? 'मिनिटे' : language === 'hi' ? 'मिनट' : 'mins'}`}
           subtitle="Target < 30 mins across OPDs"
           icon={Clock}
           trend="-6 mins vs yesterday"
@@ -127,7 +130,7 @@ export const CommandCenterPage = () => {
 
         <StatCard
           title={t('medicineAvailability')}
-          value={`${avgMedicinePct}%`}
+          value={`${num(avgMedicinePct)}%`}
           subtitle="Essential Drug List (EDL) quota"
           icon={Pill}
           trend="Critical low at Velhe PHC"
@@ -220,14 +223,14 @@ export const CommandCenterPage = () => {
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="font-heading font-bold text-xs text-slate-900 dark:text-slate-100">
-                        {ref.patientName}
+                        {locName(ref.patientName)}
                       </span>
                       <span className="text-[10px] text-slate-500 dark:text-slate-400">
-                        ({ref.patientAge}y, {ref.patientGender})
+                        ({num(ref.patientAge)} {language === 'mr' ? 'वर्षे' : language === 'hi' ? 'वर्ष' : 'y'}, {language === 'mr' ? (ref.patientGender === 'Female' ? 'स्त्री' : 'पुरुष') : language === 'hi' ? (ref.patientGender === 'Female' ? 'महिला' : 'पुरुष') : ref.patientGender})
                       </span>
                     </div>
                     <div className="text-[10px] font-mono text-slate-500 dark:text-slate-400">
-                      ABHA: {ref.abhaId}
+                      ABHA: {num(ref.abhaId)}
                     </div>
                   </div>
 
@@ -241,9 +244,9 @@ export const CommandCenterPage = () => {
 
                 {/* Facility Route */}
                 <div className="mt-2 flex items-center gap-2 text-xs font-medium text-slate-700 dark:text-slate-300 bg-white/80 dark:bg-slate-800 p-1.5 rounded-lg border border-slate-200/80 dark:border-slate-700">
-                  <span className="truncate text-slate-600 dark:text-slate-400">{ref.fromFacility}</span>
+                  <span className="truncate text-slate-600 dark:text-slate-400">{locName(ref.fromFacility)}</span>
                   <ArrowRight className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400 shrink-0" />
-                  <span className="truncate font-semibold text-slate-900 dark:text-slate-100">{ref.toFacility}</span>
+                  <span className="truncate font-semibold text-slate-900 dark:text-slate-100">{locName(ref.toFacility)}</span>
                 </div>
 
                 <div className="mt-2 text-[11px] text-slate-600 dark:text-slate-300 line-clamp-2">
@@ -254,12 +257,12 @@ export const CommandCenterPage = () => {
                 <div className="mt-2.5 pt-2 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between text-[11px]">
                   <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-400">
                     <Ambulance className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
-                    <span>{ref.ambulanceId}</span>
+                    <span>{num(ref.ambulanceId)}</span>
                   </div>
 
                   {ref.etaMinutes > 0 ? (
                     <span className="font-bold text-rose-700 dark:text-rose-400 bg-rose-100/70 dark:bg-rose-950/70 px-2 py-0.5 rounded text-[10px]">
-                      ETA: {ref.etaMinutes} mins ({ref.distanceKm} km)
+                      ETA: {num(ref.etaMinutes)} {language === 'mr' ? 'मिनिटे' : language === 'hi' ? 'मिनट' : 'mins'} ({num(ref.distanceKm)} {language === 'mr' ? 'किमी' : language === 'hi' ? 'किमी' : 'km'})
                     </span>
                   ) : (
                     <span className="text-emerald-700 dark:text-emerald-400 font-medium bg-emerald-50 dark:bg-emerald-950/50 px-2 py-0.5 rounded text-[10px]">

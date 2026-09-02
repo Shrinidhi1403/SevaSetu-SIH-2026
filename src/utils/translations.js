@@ -1,7 +1,17 @@
 export const translations = {
   en: {
+    // App Header & Branding
     appTitle: "SevaSetu",
     tagline: "National Rural Health Operations & Telemedicine",
+    portalSubtitle: "ABHA & NHM Rural Health Grid",
+    nhmOps: "NHM Ops",
+    ruralHealthOps: "Rural Health Operations",
+
+    // Navigation & Menus
+    patientDashboard: "Patient Health Portal",
+    doctorDashboard: "Doctor Dashboard",
+    supervisorDashboard: "Supervisor Dashboard",
+    ashaDashboard: "ASHA Field Station",
     commandCenter: "Command Center",
     patientRecords: "Patient Records",
     teleconsultation: "Teleconsultation",
@@ -11,31 +21,170 @@ export const translations = {
     ashaField: "ASHA Field Network",
     settings: "Settings",
     support: "Help & Support (104)",
-    activeFacilities: "Active Facilities",
-    criticalEscalations: "Critical Escalations",
-    avgWaitTime: "Avg Wait Time",
-    medicineAvailability: "Medicine Stock Index",
+    logout: "Log Out",
+    language: "Language",
+    role: "Role",
+    online: "Online",
+    offline: "Offline",
+    syncOk: "Sync OK",
+    myRole: "My Role",
+    activeSessions: "Active Sessions",
+
+    // Status & Severity
     statusOptimal: "Optimal",
     statusStrained: "Strained",
     statusCritical: "Critical",
+    statusGood: "Good",
+    statusWarning: "Needs Attention",
+    statusAlert: "High Alert",
+    statusNormal: "Normal",
+    statusElevated: "Elevated",
+
+    // Common Actions
     quickActions: "Quick Actions",
     generatePrescription: "Generate Prescription",
     referHospital: "Refer to District Hospital",
     contactFacility: "Contact Facility",
     confirmDispatch: "Confirm & Dispatch 108 ALS",
-    language: "Language",
-    role: "Role",
-    logout: "Log Out",
-    online: "Online",
-    offline: "Offline",
+    viewChart: "View Chart",
+    joinCall: "Join Call",
+    joinLiveTeleopd: "Join Live Tele-OPD",
     searchPlaceholder: "Search by ABHA ID, Patient Name, or Village...",
+    all: "All",
+    filter: "Filter",
+    close: "Close",
+    save: "Save",
+    cancel: "Cancel",
+    confirm: "Confirm",
+    download: "Download",
+    downloadCard: "Download ABHA Card",
+    share: "Share",
+    callNow: "Call Now",
+    bookAppointment: "Book Appointment",
+    readToMe: "Read Aloud",
+    stopReading: "Stop Voice",
+    logVitals: "Log Vitals",
+    markAsTaken: "Mark as Taken",
+    taken: "Taken",
+    takePill: "Take Dose",
+    requestVisit: "Request Home Visit",
+
+    // Operational KPIs
+    activeFacilities: "Active Facilities",
+    criticalEscalations: "Critical Escalations",
+    avgWaitTime: "Avg Wait Time",
+    medicineAvailability: "Medicine Stock Index",
+    bedOccupancy: "Bed Occupancy",
+    todayOpd: "Today's OPD",
+    registeredPatients: "Registered Patients",
+    dial108Queue: "Dial 108 Queue",
+
+    // Patient Dashboard Specific
+    patientWelcome: "Namaste",
+    abhaIdLabel: "ABHA ID",
+    abhaAddress: "ABHA Address",
+    bloodGroup: "Blood Group",
+    age: "Age",
+    years: "years",
+    gender: "Gender",
+    village: "Village",
+    primaryClinic: "Primary Clinic",
+    emergencyContact: "Emergency Contact",
+    overallHealthStatus: "Overall Health Status",
+    healthSummary: "Daily Health Summary",
+    vitalSigns: "Vital Signs & Biometrics",
     vitalsTitle: "Latest Clinical Vitals",
     clinicalHistory: "Longitudinal Clinical Timeline",
-    referrals: "Referrals & Escalations"
+    referrals: "Referrals & Escalations",
+    bloodPressure: "Blood Pressure",
+    bloodSugar: "Blood Sugar",
+    pulseRate: "Pulse / Heart Rate",
+    oxygenLevel: "Oxygen Level (SpO2)",
+    temperature: "Body Temperature",
+    bmi: "Body Mass Index (BMI)",
+    lastChecked: "Last Recorded",
+    medicationSchedule: "Today's Medication Routine",
+    morningDose: "Morning (Breakfast)",
+    afternoonDose: "Afternoon (Lunch)",
+    nightDose: "Night (Dinner)",
+    beforeFood: "Before meals",
+    afterFood: "After meals",
+    stockDaysLeft: "days stock remaining",
+    refillNeeded: "Refill Soon",
+    officialPrescription: "Official e-Prescription (Doctor Signed)",
+    viewPrescription: "View Prescription",
+    prescribedBy: "Prescribed By",
+    upcomingConsultations: "Upcoming Teleconsultations",
+    emergencySosCard: "Emergency 108 Ambulance SOS",
+    emergencySosDesc: "Press to instantly alert 108 EMS, PHC Doctor, and your local ASHA worker with your live location.",
+    sosTriggered: "108 Ambulance Unit Dispatched",
+    myAshaWorker: "My Assigned ASHA Worker",
+    ashaContactDesc: "Your village healthcare companion for doorstep checks, IFA tablets, and vaccinations.",
+    myPhcFacility: "My Primary Health Centre",
+    phcDistance: "Distance from home",
+    doctorOnDuty: "Doctor on Duty",
+    openHours: "OPD Timings: 08:00 AM - 04:00 PM",
+    labReports: "Laboratory & Diagnostic Reports",
+    healthEducationTips: "Daily Village Health Tip",
+    switchPatientProfile: "Switch Patient Persona (Demo)",
+
+    // Modals & Dialogs
+    ambulanceDispatchedTitle: "108 Advanced Life Support Unit Active",
+    ambulanceEta: "Estimated Arrival",
+    paramedicName: "Paramedic In-Charge",
+    ambulanceVehicle: "Ambulance Vehicle",
+    directionsToHospital: "Directions to Hospital",
+    logVitalsModalTitle: "Log Today's Health Reading",
+    systolicBp: "Systolic BP (mmHg)",
+    diastolicBp: "Diastolic BP (mmHg)",
+    fastingSugar: "Blood Sugar (mg/dL)",
+    pulseBpm: "Pulse (bpm)",
+    notesPlaceholder: "Any symptoms or comments (e.g. slight headache, fever)...",
+    submitVitals: "Save & Transmit to PHC Doctor",
+
+    // Roles
+    roleDoctor: "PHC Medical Officer",
+    roleSupervisor: "Regional Health Supervisor",
+    roleAsha: "ASHA Field Worker",
+    rolePatient: "Patient & Citizen Portal",
+
+    // Login Page
+    loginTitle: "Rural Health Operations Portal",
+    loginSubtitle: "Secure Unified Authentication for PHC Doctors, Regional Supervisors, ASHA Workers, and Citizens.",
+    selectRoleStep: "1. Select Operational Persona",
+    verifyOtpStep: "2. Mobile Number & OTP Verification",
+    registeredPhone: "Registered Mobile Number",
+    sendOtp: "Send Verification OTP",
+    enterOtp: "Enter 6-Digit OTP",
+    verifyLogin: "Verify & Open Dashboard",
+    instantEvaluatorAccess: "Instant 1-Click Persona Access (For Evaluators)",
+    loginSuccess: "Authentication Verified with ABHA ID",
+
+    // System Alerts & Telemedicine
+    systemAlertsTitle: "Active System Alerts",
+    videoCallActive: "Tele-OPD Live Call Active",
+    callDuration: "Call Duration",
+    networkQuality: "Network Signal",
+    muteMic: "Mute",
+    unmuteMic: "Unmute",
+    turnVideoOff: "Video Off",
+    turnVideoOn: "Video On",
+    endConsultation: "End Consultation"
   },
+
   hi: {
+    // App Header & Branding
     appTitle: "सेवासेतु",
     tagline: "राष्ट्रीय ग्रामीण स्वास्थ्य संचालन एवं टेलीमेडिसिन मंच",
+    portalSubtitle: "आयुष्मान भारत (ABHA) एवं राष्ट्रीय स्वास्थ्य मिशन पोर्टल",
+    nhmOps: "एनएचएम ऑप्स",
+    ruralHealthOps: "ग्रामीण स्वास्थ्य संचालन",
+
+    // Navigation & Menus
+    patientDashboard: "मरीज़ स्वास्थ्य पोर्टल",
+    doctorDashboard: "चिकित्सक डैशबोर्ड",
+    supervisorDashboard: "पर्यवेक्षक डैशबोर्ड",
+    ashaDashboard: "आशा कार्यकर्ता स्टेशन",
     commandCenter: "कमांड सेंटर (क्षेत्रीय)",
     patientRecords: "मरीज़ स्वास्थ्य अभिलेख",
     teleconsultation: "टेलीपरामर्श (लाइव)",
@@ -45,26 +194,465 @@ export const translations = {
     ashaField: "आशा कार्यकर्ता नेटवर्क",
     settings: "सेटिंग्स",
     support: "सहायता केंद्र (104)",
-    activeFacilities: "सक्रिय स्वास्थ्य केंद्र",
-    criticalEscalations: "गंभीर आपातकाल",
-    avgWaitTime: "औसत प्रतीक्षा समय",
-    medicineAvailability: "दवा उपलब्धता दर",
+    logout: "लॉग आउट",
+    language: "भाषा",
+    role: "पद / भूमिका",
+    online: "सक्रिय (ऑनलाइन)",
+    offline: "ऑफ़लाइन",
+    syncOk: "डेटा सिंक सुरक्षित",
+    myRole: "मेरी भूमिका",
+    activeSessions: "सक्रिय सत्र",
+
+    // Status & Severity
     statusOptimal: "सामान्य (अनुकूल)",
     statusStrained: "मध्यम दबाव",
     statusCritical: "अति-गंभीर",
+    statusGood: "उत्कृष्ट (स्वस्थ)",
+    statusWarning: "ध्यान देने योग्य",
+    statusAlert: "आपातकालीन चेतावनी",
+    statusNormal: "सामान्य",
+    statusElevated: "बढ़ा हुआ",
+
+    // Common Actions
     quickActions: "त्वरित कार्रवाई",
     generatePrescription: "ई-पर्चा जारी करें",
     referHospital: "जिला अस्पताल रेफर करें",
     contactFacility: "स्वास्थ्य केंद्र से संपर्क करें",
     confirmDispatch: "108 एम्बुलेंस रवाना करें",
-    language: "भाषा",
-    role: "पद / भूमिका",
-    logout: "लॉग आउट",
-    online: "सक्रिय (ऑनलाइन)",
-    offline: "ऑफ़लाइन",
+    viewChart: "अभिलेख देखें",
+    joinCall: "कॉल से जुड़ें",
+    joinLiveTeleopd: "लाइव टेली-ओपीडी शुरू करें",
     searchPlaceholder: "ABHA आईडी, मरीज़ का नाम या गाँव से खोजें...",
+    all: "सभी",
+    filter: "फ़िल्टर",
+    close: "बंद करें",
+    save: "सुरक्षित करें",
+    cancel: "रद्द करें",
+    confirm: "पुष्टि करें",
+    download: "डाउनलोड करें",
+    downloadCard: "आभा कार्ड डाउनलोड करें",
+    share: "साझा करें",
+    callNow: "सीधे कॉल करें",
+    bookAppointment: "अपॉइंटमेंट बुक करें",
+    readToMe: "आवाज़ में सुनें",
+    stopReading: "आवाज़ बंद करें",
+    logVitals: "स्वास्थ्य माप दर्ज करें",
+    markAsTaken: "दवा ले ली (दर्ज करें)",
+    taken: "ले ली",
+    takePill: "खुराक लें",
+    requestVisit: "घर पर आशा भेंट का अनुरोध",
+
+    // Operational KPIs
+    activeFacilities: "सक्रिय स्वास्थ्य केंद्र",
+    criticalEscalations: "गंभीर आपातकाल",
+    avgWaitTime: "औसत प्रतीक्षा समय",
+    medicineAvailability: "दवा उपलब्धता दर",
+    bedOccupancy: "बिस्तर उपलब्धता",
+    todayOpd: "आज का ओपीडी परामर्श",
+    registeredPatients: "पंजीकृत नागरिक",
+    dial108Queue: "108 एम्बुलेंस कतार",
+
+    // Patient Dashboard Specific
+    patientWelcome: "नमस्ते",
+    abhaIdLabel: "आभा (ABHA) आईडी",
+    abhaAddress: "आभा पता",
+    bloodGroup: "रक्त समूह",
+    age: "आयु",
+    years: "वर्ष",
+    gender: "लिंग",
+    village: "गाँव / बस्ती",
+    primaryClinic: "प्राथमिक स्वास्थ्य केंद्र",
+    emergencyContact: "आपातकालीन संपर्क",
+    overallHealthStatus: "समग्र स्वास्थ्य स्थिति",
+    healthSummary: "दैनिक स्वास्थ्य सारांश",
+    vitalSigns: "नैदानिक संकेत (वाइटल्स)",
     vitalsTitle: "ताज़ा नैदानिक संकेत (वाइटल्स)",
     clinicalHistory: "कालानुक्रमिक नैदानिक इतिहास",
-    referrals: "रेफरल एवं एम्बुलेंस ट्रैकिंग"
+    referrals: "रेफरल एवं एम्बुलेंस ट्रैकिंग",
+    bloodPressure: "रक्तचाप (ब्लड प्रेशर)",
+    bloodSugar: "रक्त शर्करा (ब्लड शुगर)",
+    pulseRate: "हृदय गति / नाड़ी",
+    oxygenLevel: "ऑक्सीजन स्तर (SpO2)",
+    temperature: "शरीर का तापमान",
+    bmi: "बॉडी मास इंडेक्स (BMI)",
+    lastChecked: "अंतिम जांच",
+    medicationSchedule: "आज की दवा दिनचर्या",
+    morningDose: "सुबह (नाश्ते के बाद)",
+    afternoonDose: "दोपहर (भोजन के बाद)",
+    nightDose: "रात (रात के खाने के बाद)",
+    beforeFood: "भोजन से पहले",
+    afterFood: "भोजन के बाद",
+    stockDaysLeft: "दिनों की दवा शेष",
+    refillNeeded: "दवा पुनः प्राप्त करें",
+    officialPrescription: "डॉक्टर द्वारा हस्ताक्षरित ई-पर्चा",
+    viewPrescription: "ई-पर्चा देखें",
+    prescribedBy: "परामर्शदाता डॉक्टर",
+    upcomingConsultations: "आगामी टेली-परामर्श",
+    emergencySosCard: "आपातकालीन 108 एम्बुलेंस SOS",
+    emergencySosDesc: "बटन दबाते ही 108 एम्बुलेंस, प्राथमिक स्वास्थ्य केंद्र और आपकी आशा कार्यकर्ता को आपकी लाइव लोकेशन भेजी जाएगी।",
+    sosTriggered: "108 एम्बुलेंस तुरंत रवाना की गई",
+    myAshaWorker: "मेरी समर्पित आशा कार्यकर्ता",
+    ashaContactDesc: "दवा वितरण, नियमित स्वास्थ्य जांच और टीकाकरण के लिए आपकी ग्राम स्वास्थ्य मित्र।",
+    myPhcFacility: "मेरा प्राथमिक स्वास्थ्य केंद्र (PHC)",
+    phcDistance: "घर से दूरी",
+    doctorOnDuty: "ड्यूटी पर चिकित्सक",
+    openHours: "ओपीडी समय: सुबह ०८:०० से शाम ०४:०० तक",
+    labReports: "लैब टेस्ट एवं जांच रिपोर्ट",
+    healthEducationTips: "आज का ग्रामीण स्वास्थ्य संदेश",
+    switchPatientProfile: "मरीज़ प्रोफ़ाइल बदलें (डेमो)",
+
+    // Modals & Dialogs
+    ambulanceDispatchedTitle: "108 आपातकालीन एम्बुलेंस सक्रिय",
+    ambulanceEta: "पहुंचने का अनुमानित समय",
+    paramedicName: "पैरामेडिक प्रभारी",
+    ambulanceVehicle: "वाहन नंबर",
+    directionsToHospital: "अस्पताल का मार्ग",
+    logVitalsModalTitle: "आज के स्वास्थ्य संकेत दर्ज करें",
+    systolicBp: "सिस्टोलिक बीपी (उच्च)",
+    diastolicBp: "डायस्टोलिक बीपी (निम्न)",
+    fastingSugar: "ब्लड शुगर (mg/dL)",
+    pulseBpm: "नाड़ी की गति (bpm)",
+    notesPlaceholder: "कोई लक्षण या विवरण (जैसे सिरदर्द, चक्कर, बुखार)...",
+    submitVitals: "सुरक्षित करें एवं डॉक्टर को भेजें",
+
+    // Roles
+    roleDoctor: "प्राथमिक स्वास्थ्य केंद्र चिकित्सा अधिकारी",
+    roleSupervisor: "क्षेत्रीय स्वास्थ्य पर्यवेक्षक / DHO",
+    roleAsha: "आशा कार्यकर्ता (ग्राम स्वास्थ्य मित्र)",
+    rolePatient: "रुग्ण एवं नागरिक पोर्टल (मरीज़)",
+
+    // Login Page
+    loginTitle: "ग्रामीण स्वास्थ्य सेवा लॉगिन पोर्टल",
+    loginSubtitle: "प्राथमिक स्वास्थ्य केंद्र डॉक्टर, क्षेत्रीय पर्यवेक्षक, आशा कार्यकर्ता और नागरिकों के लिए एकीकृत प्रमाणीकरण।",
+    selectRoleStep: "१. अपनी भूमिका चुनें",
+    verifyOtpStep: "२. मोबाइल नंबर एवं OTP सत्यापन",
+    registeredPhone: "पंजीकृत मोबाइल नंबर",
+    sendOtp: "सत्यापन OTP भेजें",
+    enterOtp: "६ अंकों का OTP दर्ज करें",
+    verifyLogin: "सत्यापित करें एवं डैशबोर्ड खोलें",
+    instantEvaluatorAccess: "त्वरित १-क्लिक एक्सेस (परीक्षक हेतु)",
+    loginSuccess: "आयुष्मान भारत आभा आईडी सत्यापित",
+
+    // System Alerts & Telemedicine
+    systemAlertsTitle: "सक्रिय सिस्टम चेतावनियाँ",
+    videoCallActive: "टेली-ओपीडी लाइव परामर्श जारी",
+    callDuration: "कॉल की अवधि",
+    networkQuality: "नेटवर्क सिग्नल",
+    muteMic: "माइक बंद करें",
+    unmuteMic: "माइक चालू करें",
+    turnVideoOff: "कैमरा बंद",
+    turnVideoOn: "कैमरा चालू",
+    endConsultation: "परामर्श समाप्त करें"
+  },
+
+  mr: {
+    // App Header & Branding
+    appTitle: "सेवासेतू",
+    tagline: "राष्ट्रीय ग्रामीण आरोग्य संचालन व टेलिमेडिसिन व्यासपीठ",
+    portalSubtitle: "आयुष्मान भारत (ABHA) व राष्ट्रीय आरोग्य अभियान (NHM)",
+    nhmOps: "एनएचएम ऑप्स",
+    ruralHealthOps: "ग्रामीण आरोग्य संचालन",
+
+    // Navigation & Menus
+    patientDashboard: "रुग्ण आरोग्य पोर्टल",
+    doctorDashboard: "वैद्यकीय अधिकारी डॅशबोर्ड",
+    supervisorDashboard: "पर्यवेक्षक डॅशबोर्ड",
+    ashaDashboard: "आशा स्वयंसेविका स्टेशन",
+    commandCenter: "नियंत्रण कक्ष (कमांड सेंटर)",
+    patientRecords: "रुग्ण आरोग्य नोंदी",
+    teleconsultation: "टेलिपरामर्श (लाइव्ह ओपीडी)",
+    analytics: "सांख्यिकी व अहवाल",
+    inventory: "औषध व साधन साठा",
+    emergency: "आपत्कालीन रेफरल (१०८)",
+    ashaField: "आशा स्वयंसेविका नेटवर्क",
+    settings: "सेटिंग्ज",
+    support: "आरोग्य साहाय्यता (१०४)",
+    logout: "लॉग आउट",
+    language: "भाषा",
+    role: "पद / भूमिका",
+    online: "सक्रिय (ऑनलाइन)",
+    offline: "ऑफलाइन",
+    syncOk: "डेटा सिंक सुरक्षित",
+    myRole: "माझी भूमिका",
+    activeSessions: "सक्रिय सत्रे",
+
+    // Status & Severity
+    statusOptimal: "सामान्य (उत्तम)",
+    statusStrained: "मध्यम भार",
+    statusCritical: "अति-गंभीर",
+    statusGood: "उत्कृष्ट (निरोगी)",
+    statusWarning: "काळजीपूर्वक लक्ष द्या",
+    statusAlert: "तातडीची धोक्याची सूचना",
+    statusNormal: "सामान्य",
+    statusElevated: "वाढलेले",
+
+    // Common Actions
+    quickActions: "त्वरित कृती",
+    generatePrescription: "ई-प्रिस्क्रिप्शन जारी करा",
+    referHospital: "जिल्हा रुग्णालयात पाठवा (रेफर)",
+    contactFacility: "आरोग्य केंद्राशी संपर्क साधा",
+    confirmDispatch: "१०८ रुग्णवाहिका रवाना करा",
+    viewChart: "तपशील पहा",
+    joinCall: "कॉलमध्ये सामील व्हा",
+    joinLiveTeleopd: "लाइव्ह टेलि-ओपीडी सुरू करा",
+    searchPlaceholder: "ABHA आयडी, रुग्णाचे नाव किंवा गावावरून शोधा...",
+    all: "सर्व",
+    filter: "फिल्टर",
+    close: "बंद करा",
+    save: "जतन करा",
+    cancel: "रद्द करा",
+    confirm: "खात्री करा",
+    download: "डाउनलोड करा",
+    downloadCard: "आभा आरोग्य कार्ड डाउनलोड करा",
+    share: "शेअर करा",
+    callNow: "कॉल करा",
+    bookAppointment: "तपासणी वेळ निश्चित करा",
+    readToMe: "आवाजात ऐका",
+    stopReading: "आवाज थांबवा",
+    logVitals: "आरोग्य तपासणी नोंदवा",
+    markAsTaken: "गोळी घेतली (नोंदवा)",
+    taken: "घेतली",
+    takePill: "डोस घ्या",
+    requestVisit: "घरी आशा भेटीची विनंती",
+
+    // Operational KPIs
+    activeFacilities: "सक्रिय आरोग्य केंद्र",
+    criticalEscalations: "अति-तातडीचे रुग्ण",
+    avgWaitTime: "सरासरी प्रतीक्षा वेळ",
+    medicineAvailability: "औषध साठा उपलब्धता",
+    bedOccupancy: "खाटांची उपलब्धता",
+    todayOpd: "आजची बाह्यरुग्ण (OPD) संख्या",
+    registeredPatients: "नोंदणीकृत नागरिक",
+    dial108Queue: "१०८ रुग्णवाहिका प्रतीक्षा",
+
+    // Patient Dashboard Specific
+    patientWelcome: "सस्नेह नमस्कार",
+    abhaIdLabel: "आभा (ABHA) आयडी",
+    abhaAddress: "आभा पत्ता",
+    bloodGroup: "रक्तगट",
+    age: "वय",
+    years: "वर्षे",
+    gender: "लिंग",
+    village: "गाव / वाडी",
+    primaryClinic: "प्राथमिक आरोग्य केंद्र",
+    emergencyContact: "आपत्कालीन संपर्क",
+    overallHealthStatus: "एकूण आरोग्य स्थिती",
+    healthSummary: "दैनिक आरोग्य सारांश",
+    vitalSigns: "शारीरिक तपासणी नोंदी (वाइटल्स)",
+    vitalsTitle: "ताजी क्लिनिकल तपासणी",
+    clinicalHistory: "आरोग्य इतिहास व उपचार नोंदी",
+    referrals: "रेफरल व १०८ ट्रॅकिंग",
+    bloodPressure: "रक्तदाब (बी.पी.)",
+    bloodSugar: "रक्तातील साखर (शुगर)",
+    pulseRate: "नाडीचे ठोके (हृदय गती)",
+    oxygenLevel: "ऑक्सिजन पातळी (SpO2)",
+    temperature: "शरीराचे तापमान",
+    bmi: "बॉडी मास इंडेक्स (BMI)",
+    lastChecked: "शेवटची तपासणी",
+    medicationSchedule: "आजचे औषधोपचार वेळापत्रक",
+    morningDose: "सकाळ (न्याहारीनंतर)",
+    afternoonDose: "दुपार (जेवणानंतर)",
+    nightDose: "रात्र (रात्रीच्या जेवणानंतर)",
+    beforeFood: "जेवणापूर्वी",
+    afterFood: "जेवणानंतर",
+    stockDaysLeft: "दिवसांचा औषध साठा शिल्लक",
+    refillNeeded: "औषध संपत आले आहे",
+    officialPrescription: "डॉक्टरांची स्वाक्षरी असलेली ई-औषध चिठ्ठी",
+    viewPrescription: "औषध चिठ्ठी पहा",
+    prescribedBy: "उपचार करणारे डॉक्टर",
+    upcomingConsultations: "नियोजित व्हिडिओ तपासणी",
+    emergencySosCard: "तातडीची मदत: १०८ रुग्णवाहिका SOS",
+    emergencySosDesc: "हे बटण दाबताच १०८ रुग्णवाहिका, प्राथमिक आरोग्य केंद्र आणि आपल्या गावातील आशा ताईंना आपल्या जागेची त्वरित माहिती जाईल.",
+    sosTriggered: "१०८ रुग्णवाहिका तातडीने पाठवण्यात आली",
+    myAshaWorker: "माझ्या भागातील आशा स्वयंसेविका",
+    ashaContactDesc: "घरोघरी आरोग्य तपासणी, औषध वाटप आणि मार्गदर्शनासाठी आपली ग्राम आरोग्य मित्र.",
+    myPhcFacility: "माझे प्राथमिक आरोग्य केंद्र (PHC)",
+    phcDistance: "घरापासून अंतर",
+    doctorOnDuty: "उपस्थित वैद्यकीय अधिकारी",
+    openHours: "ओपीडी वेळ: सकाळी ०८:०० ते दुपारी ०४:०० पर्यंत",
+    labReports: "प्रयोगशाळा तपासणी अहवाल",
+    healthEducationTips: "आजचा मोलाचा आरोग्य सल्ला",
+    switchPatientProfile: "रुग्ण खाते बदला (डेमोसाठी)",
+
+    // Modals & Dialogs
+    ambulanceDispatchedTitle: "१०८ आपत्कालीन रुग्णवाहिका सक्रिय",
+    ambulanceEta: "पोहोचण्याची अंदाजे वेळ",
+    paramedicName: "रुग्णवाहिका साहाय्यक (पैरामेडिक)",
+    ambulanceVehicle: "वाहन क्रमांक",
+    directionsToHospital: "रुग्णालयाचा मार्ग",
+    logVitalsModalTitle: "आजची आरोग्य तपासणी नोंदवा",
+    systolicBp: "सिस्टोलिक बीपी (वरचा दाब)",
+    diastolicBp: "डायस्टोलिक बीपी (खालचा दाब)",
+    fastingSugar: "रक्तातील साखर (mg/dL)",
+    pulseBpm: "नाडीचे ठोके (bpm)",
+    notesPlaceholder: "काही त्रास किंवा लक्षणे असल्यास येथे लिहा (उदा. डोकेदुखी, चक्कर, ताप)...",
+    submitVitals: "जतन करा व डॉक्टरांना पाठवा",
+
+    // Roles
+    roleDoctor: "प्राथमिक आरोग्य केंद्र वैद्यकीय अधिकारी",
+    roleSupervisor: "विभागीय आरोग्य पर्यवेक्षक / DHO",
+    roleAsha: "आशा स्वयंसेविका (ग्राम आरोग्य मित्र)",
+    rolePatient: "रुग्ण व नागरिक आरोग्य पोर्टल",
+
+    // Login Page
+    loginTitle: "ग्रामीण आरोग्य सेवा पोर्टल लॉगिन",
+    loginSubtitle: "प्राथमिक आरोग्य केंद्र डॉक्टर, विभागीय पर्यवेक्षक, आशा स्वयंसेविका आणि नागरिकांसाठी सुरक्षित एकात्मिक लॉगिन.",
+    selectRoleStep: "१. आपली भूमिका निवडा",
+    verifyOtpStep: "२. मोबाईल क्रमांक व OTP पडताळणी",
+    registeredPhone: "नोंदणीकृत मोबाईल क्रमांक",
+    sendOtp: "पडताळणी OTP पाठवा",
+    enterOtp: "६ अंकी OTP प्रविष्ट करा",
+    verifyLogin: "पडताळणी करा व डॅशबोर्ड उघडा",
+    instantEvaluatorAccess: "त्वरित १-क्लिक डॅशबोर्ड प्रवेश (परीक्षकांसाठी)",
+    loginSuccess: "आयुष्मान भारत आभा आयडी पडताळणी यशस्वी",
+
+    // System Alerts & Telemedicine
+    systemAlertsTitle: "सक्रिय आपत्कालीन सूचना",
+    videoCallActive: "टेलि-ओपीडी थेट व्हिडिओ तपासणी सुरू",
+    callDuration: "कॉलचा वेळ",
+    networkQuality: "नेटवर्क सिग्नल",
+    muteMic: "माईक म्यूट",
+    unmuteMic: "माईक सुरू",
+    turnVideoOff: "कॅमेरा बंद",
+    turnVideoOn: "कॅमेरा सुरू",
+    endConsultation: "तपासणी समाप्त करा"
   }
 };
+
+/**
+ * Converts ASCII digits 0-9 in any string or number to Devanagari numerals ०-९
+ */
+export const toDevanagariDigits = (input) => {
+  if (input === null || input === undefined) return '';
+  const str = String(input);
+  const devanagariDigits = ['०', '१', '२', '३', '४', '५', '६', '७', '८', '९'];
+  return str.replace(/[0-9]/g, (digit) => devanagariDigits[parseInt(digit, 10)]);
+};
+
+/**
+ * Formats numbers/digits according to current language (Devanagari for Hindi and Marathi, ASCII for English)
+ */
+export const formatDigits = (input, language = 'en') => {
+  if (input === null || input === undefined) return '';
+  if (language === 'hi' || language === 'mr') {
+    return toDevanagariDigits(input);
+  }
+  return String(input);
+};
+
+/**
+ * Universal name dictionary for person names, doctors, ASHAs, and facilities in Hindi & Marathi
+ */
+export const NAME_DICTIONARY = {
+  // Doctors & Healthcare Staff
+  "Dr. Ananya Kulkarni": { hi: "डॉ. अनन्या कुलकर्णी", mr: "डॉ. अनन्या कुलकर्णी" },
+  "Dr. Ananya": { hi: "डॉ. अनन्या", mr: "डॉ. अनन्या" },
+  "Dr. Rajeshwar Sharma": { hi: "डॉ. राजेश्वर शर्मा", mr: "डॉ. राजेश्वर शर्मा" },
+  "Dr. Sharma": { hi: "डॉ. शर्मा", mr: "डॉ. शर्मा" },
+  "Sunita Bai Kamble": { hi: "सुनीता बाई कांबले", mr: "सुनीता बाई कांबळे" },
+  "Sunita Kamble": { hi: "सुनीता कांबले", mr: "सुनीता कांबळे" },
+  "Ramesh Shantaram Patil": { hi: "रमेश शांताराम पाटिल", mr: "रमेश शांताराम पाटील" },
+  "Ramesh Patil": { hi: "रमेश पाटिल", mr: "रमेश पाटील" },
+  "Dr. Vikram Deshmukh": { hi: "डॉ. विक्रम देशमुख", mr: "डॉ. विक्रम देशमुख" },
+  "Dr. Vikram Deshmukh (Surgeon)": { hi: "डॉ. विक्रम देशमुख (शल्यचिकित्सक)", mr: "डॉ. विक्रम देशमुख (शल्यविशारद)" },
+  "Dr. Snehal More": { hi: "डॉ. स्नेहल मोरे", mr: "डॉ. स्नेहल मोरे" },
+  "Dr. Snehal More (General Med)": { hi: "डॉ. स्नेहल मोरे (जनरल मेडिसिन)", mr: "डॉ. स्नेहल मोरे (जनरल मेडिसिन)" },
+  "ANM Sangeeta Jadhav": { hi: "एएनएम संगीता जाधव", mr: "एएनएम संगीता जाधव" },
+  "Dr. P. R. Joshi": { hi: "डॉ. पी. आर. जोशी", mr: "डॉ. पी. आर. जोशी" },
+  "Dr. P. R. Joshi (Chief Medical Officer)": { hi: "डॉ. पी. आर. जोशी (मुख्य चिकित्सा अधिकारी)", mr: "डॉ. पी. आर. जोशी (मुख्य वैद्यकीय अधिकारी)" },
+  "Mangal Gawade": { hi: "मंगल गावड़े", mr: "मंगल गावडे" },
+  "ASHA Mangal Gawade": { hi: "आशा मंगल गावड़े", mr: "आशा मंगल गावडे" },
+  "Deepa Salunkhe": { hi: "दीपा सालुंखे", mr: "दीपा साळुंखे" },
+  "ASHA Deepa Salunkhe": { hi: "आशा दीपा सालुंखे", mr: "आशा दीपा साळुंखे" },
+  "Anita Shinde": { hi: "अनीता शिंदे", mr: "अनिता शिंदे" },
+  "ASHA Anita Shinde": { hi: "आशा अनीता शिंदे", mr: "आशा अनिता शिंदे" },
+  "Razia Begum": { hi: "रज़िया बेगम", mr: "रझिया बेगम" },
+  "ASHA Razia Begum": { hi: "आशा रज़िया बेगम", mr: "आशा रझिया बेगम" },
+  "Pooja Jadhav": { hi: "पूजा जाधव", mr: "पूजा जाधव" },
+  "Mahesh Patil": { hi: "महेश पाटिल", mr: "महेश पाटील" },
+  "Sachin Shinde": { hi: "सचिन शिंदे", mr: "सचिन शिंदे" },
+  "Datta Shinde": { hi: "दत्ता शिंदे", mr: "दत्ता शिंदे" },
+  "Ankush More": { hi: "अंकुश मोरे", mr: "अंकुश मोरे" },
+  "Santosh Gaikwad": { hi: "संतोष गायकवाड़", mr: "संतोष गायकवाड" },
+
+  // Patients
+  "Sunita Laxman Jadhav": { hi: "सुनीता लक्ष्मण जाधव", mr: "सुनिता लक्ष्मण जाधव" },
+  "Aarav Sachin Shinde": { hi: "आरव सचिन शिंदे", mr: "आरव सचिन शिंदे" },
+  "Tukaram Kisan Shinde": { hi: "तुकाराम किसन शिंदे", mr: "तुकाराम किसन शिंदे" },
+  "Parvati Devi More": { hi: "पार्वती देवी मोरे", mr: "पार्वतीदेवी मोरे" },
+  "Meena Santosh Gaikwad": { hi: "मीना संतोष गायकवाड़", mr: "मीना संतोष गायकवाड" },
+  "Fatima Noor Mohammed": { hi: "फातिमा नूर मोहम्मद", mr: "फातिमा नूर मोहम्मद" },
+
+  // Facilities & Hospitals
+  "PHC Shirwal": { hi: "प्राथमिक स्वास्थ्य केंद्र शिरवल", mr: "प्राथमिक आरोग्य केंद्र शिरवळ" },
+  "CHC Khandala": { hi: "सामुदायिक स्वास्थ्य केंद्र खंडाला", mr: "ग्रामीण रुग्णालय / सामु.आ. केंद्र खंडाळा" },
+  "Sub-Center Velhe": { hi: "उप-स्वास्थ्य केंद्र वेल्हे", mr: "उप-आरोग्य केंद्र वेल्हे" },
+  "District Hospital Satara": { hi: "जिला अस्पताल सतारा", mr: "जिल्हा रुग्णालय सातारा" },
+  "PHC Bhor": { hi: "प्राथमिक स्वास्थ्य केंद्र भोर", mr: "प्राथमिक आरोग्य केंद्र भोर" },
+  "Sub-Center Kikvi": { hi: "उप-स्वास्थ्य केंद्र किकवी", mr: "उप-आरोग्य केंद्र किकवी" },
+  "Sassoon General Hospital Pune": { hi: "ससून सर्वोपचार अस्पताल पुणे", mr: "ससून सर्वोपचार रुग्णालय पुणे" },
+  "District Health Office, Satara": { hi: "जिला स्वास्थ्य कार्यालय, सतारा", mr: "जिल्हा आरोग्य कार्यालय, सातारा" },
+  "Shirwal West Cluster": { hi: "शिरवल पश्चिम क्लस्टर", mr: "शिरवळ पश्चिम विभाग" },
+
+  // Localities & Blocks
+  "Shirwal Gaon, Ward 3": { hi: "शिरवल गाँव, वार्ड ३", mr: "शिरवळ गाव, वॉर्ड ३" },
+  "Khandala Taluka, Vasti 4": { hi: "खंडाला तालुका, बस्ती ४", mr: "खंडाळा तालुका, वस्ती ४" },
+  "Velhe Hills, Wadi 2": { hi: "वेल्हे हिल्स, वाडी २", mr: "वेल्हे टेकड्या, वाडी २" },
+  "Kikvi Vasti, Plot 12": { hi: "किकवी बस्ती, प्लॉट १२", mr: "किकवी वस्ती, प्लॉट १२" },
+  "Bhor Valley, Khopadi": { hi: "भोर वैली, खोपड़ी", mr: "भोर खोरे, खोपडी" },
+  "Shirwal Gaon, Ward 1": { hi: "शिरवल गाँव, वार्ड १", mr: "शिरवळ गाव, वॉर्ड १" },
+  "Shirwal Industrial Area": { hi: "शिरवल औद्योगिक क्षेत्र", mr: "शिरवळ औद्योगिक वसाहत" },
+  "Bhor Sub-division": { hi: "भोर उप-मंडल", mr: "भोर उपविभाग" },
+  "Khandala Block": { hi: "खंडाला ब्लॉक", mr: "खंडाळा तालुका" },
+  "Velhe Hills": { hi: "वेल्हे हिल्स", mr: "वेल्हे टेकड्या" },
+  "Satara HQ": { hi: "सतारा मुख्यालय", mr: "सातारा मुख्यालय" },
+  "Bhor Valley": { hi: "भोर वैली", mr: "भोर खोरे" },
+  "Shirwal Cluster": { hi: "शिरवल क्लस्टर", mr: "शिरवळ विभाग" },
+  "Pune Rural Division": { hi: "पुणे ग्रामीण संभाग", mr: "पुणे ग्रामीण विभाग" },
+  "Shirwal": { hi: "शिरवल", mr: "शिरवळ" },
+  "Khandala": { hi: "खंडाला", mr: "खंडाळा" },
+  "Velhe": { hi: "वेल्हे", mr: "वेल्हे" },
+  "Satara": { hi: "सतारा", mr: "सातारा" },
+  "Bhor": { hi: "भोर", mr: "भोर" },
+  "Kikvi": { hi: "किकवी", mr: "किकवी" },
+  "Pune": { hi: "पुणे", mr: "पुणे" }
+};
+
+/**
+ * Localizes any entity name (patient, doctor, facility, village, or raw string)
+ */
+export const localizeName = (entity, language = 'en') => {
+  if (!entity) return '';
+  if (typeof entity === 'string') {
+    if (language === 'mr' && NAME_DICTIONARY[entity]?.mr) return NAME_DICTIONARY[entity].mr;
+    if (language === 'hi' && NAME_DICTIONARY[entity]?.hi) return NAME_DICTIONARY[entity].hi;
+    return entity;
+  }
+  if (language === 'mr') {
+    return entity.nameMarathi || entity.titleMarathi || entity.nameHindi || entity.name || '';
+  }
+  if (language === 'hi') {
+    return entity.nameHindi || entity.titleHindi || entity.nameMarathi || entity.name || '';
+  }
+  return entity.name || entity.title || '';
+};
+
+/**
+ * Localizes village or locality string
+ */
+export const localizeVillage = (entity, language = 'en') => {
+  if (!entity) return '';
+  if (typeof entity === 'string') {
+    if (language === 'mr' && NAME_DICTIONARY[entity]?.mr) return NAME_DICTIONARY[entity].mr;
+    if (language === 'hi' && NAME_DICTIONARY[entity]?.hi) return NAME_DICTIONARY[entity].hi;
+    return entity;
+  }
+  if (language === 'mr') {
+    return entity.villageMarathi || entity.villageHindi || entity.village || '';
+  }
+  if (language === 'hi') {
+    return entity.villageHindi || entity.villageMarathi || entity.village || '';
+  }
+  return entity.village || '';
+};
+

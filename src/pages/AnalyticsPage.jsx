@@ -35,7 +35,7 @@ import {
 } from 'lucide-react';
 
 export const AnalyticsPage = () => {
-  const { facilities, referrals, notify, theme } = useApp();
+  const { facilities, referrals, notify, theme, language, t } = useApp();
   const [timeRange, setTimeRange] = useState('8months');
 
   const criticalEscalations = referrals.filter(r => r.urgency === 'critical').length;
@@ -59,7 +59,7 @@ export const AnalyticsPage = () => {
             </span>
           </div>
           <h2 className="font-heading text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100 mt-1">
-            District Healthcare Performance & Utilization
+            {language === 'mr' ? 'जिल्हा आरोग्य कार्यक्षमता व सांख्यिकी अहवाल' : language === 'hi' ? 'जिला स्वास्थ्य प्रदर्शन एवं सांख्यिकी' : 'District Healthcare Performance & Utilization'}
           </h2>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
             HMIS Indicators, Teleconsultation Uptake, and Maternal-Infant Survival Matrices.
@@ -91,7 +91,7 @@ export const AnalyticsPage = () => {
             className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg bg-teal-700 hover:bg-teal-800 text-white shadow-sm transition-colors"
           >
             <Download className="w-3.5 h-3.5" />
-            <span>Export HMIS</span>
+            <span>{language === 'mr' ? 'HMIS अहवाल डाउनलोड' : language === 'hi' ? 'HMIS रिपोर्ट डाउनलोड' : 'Export HMIS'}</span>
           </button>
         </div>
       </div>

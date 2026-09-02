@@ -12,19 +12,25 @@ export const Layout = () => {
 
   const getPageMeta = () => {
     switch (location.pathname) {
+      case '/dashboard/patient':
+      case '/patient-portal':
+        return {
+          title: language === 'mr' ? 'रुग्ण व नागरिक आरोग्य पोर्टल' : language === 'hi' ? 'मरीज़ स्वास्थ्य पोर्टल' : 'Patient Health & Telemedicine Portal',
+          subtitle: language === 'mr' ? 'आयुष्मान भारत डिजिटल हेल्थ कार्ड, दैनिक गोळ्यांचे वेळापत्रक, व्हिडिओ तपासणी व १०८ मदत' : language === 'hi' ? 'आयुष्मान भारत आभा कार्ड, दवा दिनचर्या, टेलीपरामर्श एवं 108 एम्बुलेंस' : 'ABHA Health ID, Daily Medication Routine, Teleconsultations & 108 SOS'
+        };
       case '/dashboard/doctor':
         return {
-          title: language === 'hi' ? 'चिकित्सक दैनिक ओपीडी एवं परामर्श स्टेशन' : 'Doctor Clinical Station & Tele-OPD',
+          title: language === 'mr' ? 'वैद्यकीय अधिकारी ओपीडी व क्लिनिकल स्टेशन' : language === 'hi' ? 'चिकित्सक दैनिक ओपीडी एवं परामर्श स्टेशन' : 'Doctor Clinical Station & Tele-OPD',
           subtitle: "PHC Shirwal Daily OPD Queue, eSanjeevani Teleconsultations & Vitals Critical Watch"
         };
       case '/dashboard/supervisor':
         return {
-          title: language === 'hi' ? 'क्षेत्रीय स्वास्थ्य पर्यवेक्षक कमांड कक्ष' : 'Regional Supervisor Command & Logistics',
+          title: language === 'mr' ? 'विभागीय आरोग्य पर्यवेक्षक नियंत्रण कक्ष' : language === 'hi' ? 'क्षेत्रीय स्वास्थ्य पर्यवेक्षक कमांड कक्ष' : 'Regional Supervisor Command & Logistics',
           subtitle: "District Health Office (DHO) Cluster Capacity, 108 Ambulances & Stock Redistribution"
         };
       case '/dashboard/asha':
         return {
-          title: language === 'hi' ? 'आशा कार्यकर्ता ग्राम स्वास्थ्य स्टेशन' : 'ASHA Frontline Field Station',
+          title: language === 'mr' ? 'आशा स्वयंसेविका ग्राम आरोग्य स्टेशन' : language === 'hi' ? 'आशा कार्यकर्ता ग्राम स्वास्थ्य स्टेशन' : 'ASHA Frontline Field Station',
           subtitle: "Doorstep Screening Itinerary, High-Risk Maternal ANC & Offline Tablet Queue"
         };
       case '/':
