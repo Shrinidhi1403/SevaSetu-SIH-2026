@@ -192,6 +192,7 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  // checks login credentials with the database
   const login = (roleId, phone, otp) => {
     const found = AVAILABLE_ROLES.find(r => r.id === roleId) || AVAILABLE_ROLES[0];
     const newUser = {
