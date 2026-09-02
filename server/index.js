@@ -54,7 +54,7 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// 404 handler
+// 404 error handler of not found
 app.use((req, res) => {
   res.status(404).json({ success: false, error: 'Endpoint not found on SevaSetu API' });
 });
