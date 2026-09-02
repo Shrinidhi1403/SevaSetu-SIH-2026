@@ -57,7 +57,13 @@ Since this is a frontend-only MVP, setup is incredibly fast and simple.
 
 1. **Clone the repository:**
    ```bash
-git clone [https://github.com/Shrinidhi1403/SevaSetu-SIH-2026.git](https://github.com/Shrinidhi1403/SevaSetu-SIH-2026.git)
+   git clone https://github.com/Shrinidhi1403/SevaSetu-SIH-2026.git
+
+cd SevaSetu-SIH-2026
+
+npm install
+
+npm run dev
 
 ---
 
