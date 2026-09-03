@@ -70,10 +70,10 @@ export const LoginPage = () => {
           </div>
           <div>
             <span className="font-heading text-lg font-bold text-slate-900 dark:text-slate-100 tracking-tight">
-              {language === 'mr' ? 'सेवासेतू' : language === 'hi' ? 'सेवासेतु' : 'SevaSetu'}
+              {t('appTitle')}
             </span>
             <span className="ml-2 text-[11px] font-semibold text-teal-700 dark:text-teal-400 bg-teal-50 dark:bg-teal-950 px-2 py-0.5 rounded border border-teal-200 dark:border-teal-800">
-              ABHA & NHM Rural Portal
+              {t('portalSubtitle')}
             </span>
           </div>
         </div>
@@ -124,14 +124,10 @@ export const LoginPage = () => {
                 <span>Ayushman Bharat Digital Mission (ABDM) Compliant</span>
               </div>
               <h2 className="font-heading text-2xl sm:text-3xl font-bold tracking-tight">
-                {language === 'mr' ? 'ग्रामीण आरोग्य सेवा पोर्टल लॉगिन' : language === 'hi' ? 'ग्रामीण स्वास्थ्य सेवा लॉगिन' : 'Rural Health Operations Portal'}
+                {t('loginTitle')}
               </h2>
               <p className="text-teal-100 text-xs sm:text-sm mt-1 max-w-lg">
-                {language === 'mr'
-                  ? 'प्राथमिक आरोग्य केंद्र डॉक्टर, विभागीय पर्यवेक्षक, आशा स्वयंसेविका आणि ग्रामीण नागरिकांसाठी एकात्मिक लॉगिन.'
-                  : language === 'hi'
-                  ? 'प्राथमिक स्वास्थ्य केंद्र डॉक्टर, क्षेत्रीय पर्यवेक्षक, आशा कार्यकर्ता और नागरिकों के लिए एकीकृत प्रमाणीकरण।'
-                  : 'Secure Unified Authentication for PHC Doctors, Regional Supervisors, ASHA Field Workers, and Citizens across District Clusters.'}
+                {t('loginSubtitle')}
               </p>
             </div>
             <div className="absolute right-0 bottom-0 opacity-10 pointer-events-none">
@@ -143,7 +139,7 @@ export const LoginPage = () => {
             {/* Role Selector (4 Roles: Doctor, Supervisor, ASHA, Patient) */}
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-2">
-                {language === 'mr' ? '१. आपली भूमिका निवडा (Role Selector)' : language === 'hi' ? '१. अपनी भूमिका चुनें (Role Selector)' : '1. Select Operational Role'}
+                {t('selectRoleStep')}
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
                 {AVAILABLE_ROLES.map((role) => {
@@ -187,14 +183,14 @@ export const LoginPage = () => {
             {/* Phone + OTP Form */}
             <div className="border-t border-slate-100 dark:border-slate-800 pt-5">
               <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-2">
-                {language === 'hi' ? '२. मोबाइल नंबर एवं OTP सत्यापन' : '2. Mobile Number & OTP Verification'}
+                {t('verifyOtpStep')}
               </label>
 
               {!otpSent ? (
                 <form onSubmit={handleSendOtp} className="space-y-4">
                   <div>
                     <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
-                      Registered Mobile Number
+                      {t('registeredPhone')}
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500 dark:text-slate-400 font-semibold text-xs border-r pr-2 my-2 border-slate-200 dark:border-slate-700">
@@ -211,7 +207,7 @@ export const LoginPage = () => {
                       />
                     </div>
                     <p className="text-[11px] text-slate-400 mt-1">
-                      ABHA-linked SIM card will receive an instant 6-digit one-time passcode.
+                      {t('otpInfo')}
                     </p>
                   </div>
 
@@ -224,7 +220,7 @@ export const LoginPage = () => {
                       <span className="inline-block animate-spin">⏳</span>
                     ) : (
                       <>
-                        <span>Send Verification OTP</span>
+                        <span>{t('sendOtp')}</span>
                         <ArrowRight className="w-4 h-4" />
                       </>
                     )}
@@ -232,20 +228,20 @@ export const LoginPage = () => {
                 </form>
               ) : (
                 <form onSubmit={handleVerifyLogin} className="space-y-4">
-                  <div className="bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 p-2.5 rounded-lg text-xs text-emerald-800 dark:text-emerald-300 flex items-center justify-between">
-                    <span>OTP sent to +91 {phoneNumber}</span>
+                    <div className="bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 p-2.5 rounded-lg text-xs text-emerald-800 dark:text-emerald-300 flex items-center justify-between">
+                    <span>{t('otpSentPrefix')} +91 {phoneNumber}</span>
                     <button
                       type="button"
                       onClick={() => setOtpSent(false)}
                       className="text-teal-700 dark:text-teal-400 font-bold underline text-[11px]"
                     >
-                      Change Number
+                      {t('changeNumber')}
                     </button>
                   </div>
 
                   <div>
                     <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
-                      Enter 6-Digit OTP (Pre-filled for Sandbox)
+                      {t('enterOtp')}
                     </label>
                     <div className="relative">
                       <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
@@ -261,15 +257,13 @@ export const LoginPage = () => {
                     </div>
                   </div>
 
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full py-2.5 px-4 bg-teal-700 hover:bg-teal-800 text-white text-sm font-semibold rounded-xl transition-colors shadow-sm flex items-center justify-center gap-2"
-                  >
-                    {loading
-                      ? (language === 'mr' ? 'पडताळणी करत आहे...' : language === 'hi' ? 'सत्यापन हो रहा है...' : 'Verifying...')
-                      : (language === 'mr' ? 'पडताळणी करा व डॅशबोर्ड उघडा' : language === 'hi' ? 'सत्यापन करें एवं डॅशबोर्ड खोलें' : 'Verify & Launch Role Dashboard')}
-                  </button>
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className="w-full py-2.5 px-4 bg-teal-700 hover:bg-teal-800 text-white text-sm font-semibold rounded-xl transition-colors shadow-sm flex items-center justify-center gap-2"
+                    >
+                      {loading ? t('verifying') : t('verifyLogin')}
+                    </button>
                 </form>
               )}
             </div>
@@ -277,7 +271,7 @@ export const LoginPage = () => {
             {/* 1-Click Fast Sandbox Access for Evaluators */}
             <div className="border-t border-slate-100 dark:border-slate-800 pt-4">
               <div className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-center mb-2.5">
-                {language === 'mr' ? '⚡ त्वरित १-क्लिक डॅशबोर्ड प्रवेश (परीक्षकांसाठी)' : language === 'hi' ? '⚡ त्वरित १-क्लिक भूमिका प्रवेश (परीक्षकों के लिए)' : '⚡ Instant Evaluator Access (1-Click Persona Launch)'}
+                {t('instantEvaluatorAccess')}
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 <button

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { StatCard } from '../../components/StatCard';
 import { Badge } from '../../components/Badge';
+import { formatDigits } from '../../utils/translations';
 import { useNavigate } from 'react-router-dom';
 import {
   HeartPulse,
@@ -30,10 +31,20 @@ export const AshaDashboard = () => {
     setSelectedPatientId,
     logAshaVisit,
     notify,
-    language
+    language,
+    t,
+    locName,
+    num
   } = useApp();
 
   const navigate = useNavigate();
+  const localNum = (value) => formatDigits(value, language);
+  const routeHomesValue = language === 'en' ? '4 Homes' : language === 'hi' ? '४ घर' : '४ घरे';
+  const routeHomesSubtitle = language === 'en' ? '2 Critical • 1 Maternal • 1 NCD' : '२ गंभीर • १ मातृ • १ NCD';
+  const monthlyTargetValue = language === 'en' ? '248 / 284' : '२४८ / २८४';
+  const monthlyTargetTrend = language === 'en' ? '+12 homes this week' : '+१२ घरें इस सप्ताह';
+  const mothersValue = language === 'en' ? '6 High-Risk' : language === 'hi' ? '६ हाई-रिस्क' : '६ उच्च-जोखीम';
+  const batteryValue = language === 'en' ? '88% • 4G LTE' : '८८% • ४जी एलटीई';
 
   // Offline queue state
   const [offlineRecordsCount, setOfflineRecordsCount] = useState(2);
@@ -132,15 +143,15 @@ export const AshaDashboard = () => {
           <div>
             <div className="flex items-center gap-2">
               <span className="text-[11px] font-bold tracking-wide uppercase px-2 py-0.5 rounded bg-emerald-700/70 border border-emerald-400/30">
-                {language === 'mr' ? 'आशा स्वयंसेविका (ग्राम आरोग्य मित्र)' : language === 'hi' ? 'आशा कार्यकर्ता (ग्राम स्वास्थ्य मित्र)' : 'Grassroots Frontline Health Mobilizer'}
+                {t('ashaFrontlineHealthMobilizer')}
               </span>
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
             </div>
             <h2 className="font-heading text-xl sm:text-2xl font-bold tracking-tight mt-1">
-              {language === 'mr' ? `सस्नेह नमस्कार, ${currentUser.name}` : language === 'hi' ? `नमस्ते, ${currentUser.name}` : `Namaste, ${currentUser.name}`}
+              {t('dashboardWelcome')}, {currentUser.name}
             </h2>
             <p className="text-emerald-100 text-xs mt-0.5">
-              {language === 'mr' ? `क्लस्टर: ${currentUser.facility} • २८४ कुटुंबे नियुक्त` : `Cluster: ${currentUser.facility} • 284 Households Assigned • Field Day Active`}
+              {currentUser.facility} • {t('householdsAssigned')} • {t('fieldDayActive')}
             </p>
           </div>
         </div>
@@ -159,10 +170,10 @@ export const AshaDashboard = () => {
             <RefreshCw className={`w-4 h-4 ${isSyncing ? 'animate-spin' : ''}`} />
             <span>
               {isSyncing
-                ? "Syncing Cloud..."
+                ? t('syncCloud')
                 : offlineRecordsCount > 0
-                ? (language === 'mr' ? `ऑफलाइन नोंदी सिंक करा (${offlineRecordsCount})` : language === 'hi' ? `ऑफ़लाइन रिकॉर्ड सिंक करें (${offlineRecordsCount})` : `Sync Offline Queue (${offlineRecordsCount})`)
-                : "All Records Synced ✓"}
+                ? `${t('syncOfflineQueue')} (${offlineRecordsCount})`
+                : `${t('allRecordsSynced')} ✓`}
             </span>
           </button>
 
@@ -172,7 +183,7 @@ export const AshaDashboard = () => {
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-md transition-all"
           >
             <PhoneCall className="w-4 h-4" />
-            <span>SOS Doctor Call</span>
+            <span>{t('doctorCall')}</span>
           </a>
         </div>
       </div>
@@ -180,41 +191,41 @@ export const AshaDashboard = () => {
       {/* 4 ASHA Frontline KPIs */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
-          title="Today's Doorstep Route"
-          value="4 Homes"
-          subtitle="2 Critical • 1 Maternal • 1 NCD"
+          title={t('todaysDoorstepRoute')}
+          value={routeHomesValue}
+          subtitle={routeHomesSubtitle}
           icon={Home}
-          trend="2 Completed"
+          trend={language === 'en' ? '2 Completed' : '२ पूर्ण'}
           trendType="positive"
           variant="teal"
         />
 
         <StatCard
-          title="Monthly Visit Target"
-          value="248 / 284"
-          subtitle="87.3% Coverage this month"
+          title={t('monthlyVisitTarget')}
+          value={monthlyTargetValue}
+          subtitle={language === 'en' ? '87.3% Coverage this month' : '८७.३% इस महीने कवरेज'}
           icon={Users}
-          trend="+12 homes this week"
+          trend={monthlyTargetTrend}
           trendType="positive"
           variant="blue"
         />
 
         <StatCard
-          title="Mothers Under Watch"
-          value="6 High-Risk"
-          subtitle="Severe anemia & pre-eclampsia watch"
+          title={t('mothersUnderWatch')}
+          value={mothersValue}
+          subtitle={language === 'en' ? 'Severe anemia & pre-eclampsia watch' : 'गंभीर एनीमिया और प्री-एक्लेम्पसिया की निगरानी'}
           icon={Baby}
-          trend="All registered in ABHA"
+          trend={language === 'en' ? 'All registered in ABHA' : 'सभी ABHA में पंजीकृत'}
           trendType="neutral"
           variant="rose"
         />
 
         <StatCard
-          title="Tablet Battery & Network"
-          value="88% • 4G LTE"
-          subtitle="Govt Allotted Samsung Galaxy M14"
+          title={t('tabletBatteryNetwork')}
+          value={batteryValue}
+          subtitle={language === 'en' ? 'Govt Allotted Samsung Galaxy M14' : 'सरकारी आवंटित सैमसंग गैलेक्सी M14'}
           icon={Smartphone}
-          trend="Signal Strong"
+          trend={language === 'en' ? 'Signal Strong' : 'सिग्नल मजबूत'}
           trendType="positive"
           variant="amber"
         />
@@ -228,7 +239,7 @@ export const AshaDashboard = () => {
             <div>
               <h3 className="font-heading font-bold text-slate-900 dark:text-slate-100 text-base flex items-center gap-2">
                 <Home className="w-4 h-4 text-emerald-600" />
-                <span>Today's Doorstep Screening Itinerary</span>
+                <span>{t('doorstepScreeningItinerary')}</span>
               </h3>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                 Prioritized route for village home visits, medicine delivery, and vitals recording
@@ -240,7 +251,7 @@ export const AshaDashboard = () => {
               className="text-xs font-semibold text-teal-700 dark:text-teal-400 bg-teal-50 dark:bg-teal-950/60 px-3 py-1.5 rounded-lg border border-teal-200 dark:border-teal-800 flex items-center gap-1"
             >
               <Plus className="w-3.5 h-3.5" />
-              <span>Log Visit</span>
+              <span>{t('logVisit')}</span>
             </button>
           </div>
 
@@ -256,7 +267,7 @@ export const AshaDashboard = () => {
                       {task.time}
                     </span>
                     <span className="font-bold text-slate-900 dark:text-slate-100 text-sm">
-                      {task.beneficiary}
+                      {locName(task.beneficiary)}
                     </span>
                     <Badge status={task.badge} label={task.priority} size="xs" />
                   </div>
@@ -274,7 +285,7 @@ export const AshaDashboard = () => {
                     className="py-1.5 px-3 bg-teal-700 hover:bg-teal-800 text-white rounded-lg font-semibold text-xs transition-colors flex items-center gap-1"
                   >
                     <HeartPulse className="w-3.5 h-3.5" />
-                    <span>Record Vitals</span>
+                    <span>{t('recordVitals')}</span>
                   </button>
                 </div>
               </div>
@@ -289,18 +300,18 @@ export const AshaDashboard = () => {
               <div className="flex items-center gap-2">
                 <Baby className="w-4 h-4 text-rose-600" />
                 <h4 className="font-heading font-bold text-slate-900 dark:text-slate-100 text-sm">
-                  High-Risk Mothers (ANC / PNC)
+                  {t('highRiskMothers')}
                 </h4>
               </div>
               <span className="text-[10px] font-bold text-rose-700 bg-rose-50 dark:bg-rose-950/60 px-2 py-0.5 rounded">
-                Weekly Surveillance
+                {t('weeklySurveillance')}
               </span>
             </div>
 
             <div className="space-y-2.5 text-xs">
               <div className="p-3 bg-rose-50/40 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-800/60 rounded-xl space-y-1">
                 <div className="flex justify-between font-bold text-slate-900 dark:text-slate-100">
-                  <span>Sunita Laxman Jadhav (24y)</span>
+                  <span>{locName('Sunita Laxman Jadhav')} ({num(24)}y)</span>
                   <span className="text-rose-700 dark:text-rose-400">34 Wks Gestation</span>
                 </div>
                 <p className="text-[11px] text-slate-600 dark:text-slate-400">

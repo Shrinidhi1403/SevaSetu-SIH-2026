@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { StatCard } from '../../components/StatCard';
 import { Badge } from '../../components/Badge';
+import { formatDigits } from '../../utils/translations';
 import { useNavigate } from 'react-router-dom';
 import {
   Building2,
@@ -29,10 +30,17 @@ export const SupervisorDashboard = () => {
     inventory,
     ashaWorkers,
     notify,
-    language
+    language,
+    t
   } = useApp();
 
   const navigate = useNavigate();
+  const localNum = (value) => formatDigits(value, language);
+  const bedOccupancyValue = `${localNum(occupiedBeds)}/${localNum(totalBeds)}`;
+  const bedOccupancySubtitle = `${localNum(overallBedPct)}% Cluster Utilization`;
+  const escalationsValue = `${localNum(activeReferralsCount)} In Transit`;
+  const stockoutValue = `${localNum(criticalShortages.length)} Batches`;
+  const targetValue = language === 'en' ? '89.3%' : '८९.३%';
 
   // Redistribution state
   const [redistributeModal, setRedistributeModal] = useState(false);
@@ -66,15 +74,15 @@ export const SupervisorDashboard = () => {
           <div>
             <div className="flex items-center gap-2">
               <span className="text-[11px] font-bold tracking-wide uppercase px-2 py-0.5 rounded bg-blue-700/60 border border-blue-400/30">
-                {language === 'mr' ? 'जिल्हा आरोग्य कार्यालय (DHO) • विभागीय नियंत्रण कक्ष' : language === 'hi' ? 'जिला स्वास्थ्य कार्यालय (DHO) • क्षेत्रीय नियंत्रण कक्ष' : 'District Health Office (DHO) • Cluster Command'}
+                {t('districtHealthOffice')}
               </span>
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
             </div>
             <h2 className="font-heading text-xl sm:text-2xl font-bold tracking-tight mt-1">
-              {language === 'mr' ? `स्वागत आहे, ${currentUser.name}` : language === 'hi' ? `स्वागत है, ${currentUser.name}` : `Welcome, ${currentUser.name}`}
+              {t('dashboardWelcome')}, {currentUser.name}
             </h2>
             <p className="text-blue-200 text-xs mt-0.5">
-              {language === 'mr' ? 'विभागीय आरोग्य पर्यवेक्षक • सातारा व पुणे ग्रामीण विभाग' : 'Regional Supervisor • Satara & Pune Rural Division • 6 Facilities, 4 ASHA Clusters'}
+              {t('regionalSupervisor')}
             </p>
           </div>
         </div>
@@ -85,7 +93,7 @@ export const SupervisorDashboard = () => {
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs shadow-md transition-all"
           >
             <Share2 className="w-4 h-4" />
-            <span>{language === 'mr' ? 'औषध साठा पुनर्वितरण' : language === 'hi' ? 'दवा स्टॉक पुनर्वितरण' : 'Reallocate Medicine Stock'}</span>
+            <span>{t('reallocateMedicineStock')}</span>
           </button>
 
           <button
@@ -93,7 +101,7 @@ export const SupervisorDashboard = () => {
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white text-slate-900 font-bold text-xs shadow-md hover:bg-slate-100 transition-all"
           >
             <Building2 className="w-4 h-4 text-blue-600" />
-            <span>{language === 'mr' ? 'विभागीय नकाशा' : language === 'hi' ? 'क्षेत्रीय मानचित्र' : 'Regional Map'}</span>
+            <span>{t('regionalMap')}</span>
           </button>
         </div>
       </div>
@@ -101,41 +109,41 @@ export const SupervisorDashboard = () => {
       {/* 4 Supervisor Operational KPIs */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
-          title="Cluster Bed Occupancy"
-          value={`${occupiedBeds}/${totalBeds}`}
-          subtitle={`${overallBedPct}% Cluster Utilization`}
+          title={t('clusterBedOccupancy')}
+          value={bedOccupancyValue}
+          subtitle={bedOccupancySubtitle}
           icon={Building2}
-          trend="Satara DH: 204/250"
+          trend={language === 'en' ? 'Satara DH: 204/250' : 'सातारा DH: २०४/२५०'}
           trendType="neutral"
           variant="teal"
         />
 
         <StatCard
-          title="Critical 108 Escalations"
-          value={`${activeReferralsCount} In Transit`}
-          subtitle="Golden-hour STEMI & High-Risk ANC"
+          title={t('critical108Escalations')}
+          value={language === 'en' ? `${activeReferralsCount} In Transit` : `${localNum(activeReferralsCount)} ट्रान्सिट में`}
+          subtitle={language === 'en' ? 'Golden-hour STEMI & High-Risk ANC' : 'गोल्डन-अवसर STEMI & हाई-रिस्क ANC'}
           icon={Ambulance}
-          trend="Avg Response: 14m"
+          trend={language === 'en' ? 'Avg Response: 14m' : 'औसत प्रतिक्रिया: १४मि'}
           trendType="negative"
           variant="rose"
         />
 
         <StatCard
-          title="Critical Stockouts"
-          value={`${criticalShortages.length} Batches`}
-          subtitle="ORS & Artesunate depleted at Velhe"
+          title={t('criticalStockouts')}
+          value={stockoutValue}
+          subtitle={language === 'en' ? 'ORS & Artesunate depleted at Velhe' : 'वेल्हे में ORS और आर्टेसुनेट समाप्त'}
           icon={Package}
-          trend="Immediate Indent Needed"
+          trend={language === 'en' ? 'Immediate Indent Needed' : 'तुरंत इंडेंट आवश्यक'}
           trendType="negative"
           variant="amber"
         />
 
         <StatCard
-          title="ASHA Field Doorstep Target"
-          value="89.3%"
-          subtitle="983/1,100 Households Covered"
+          title={t('ashaFieldDoorstepTarget')}
+          value={targetValue}
+          subtitle={language === 'en' ? '983/1,100 Households Covered' : '९८३/१,१०० घर कवर'}
           icon={Users}
-          trend="+5.1% vs last month"
+          trend={language === 'en' ? '+5.1% vs last month' : '+५.१% पिछले महीने की तुलना में'}
           trendType="positive"
           variant="blue"
         />
@@ -149,13 +157,13 @@ export const SupervisorDashboard = () => {
             <div>
               <h3 className="font-heading font-bold text-slate-900 dark:text-slate-100 text-base flex items-center gap-2">
                 <Building2 className="w-4 h-4 text-blue-600" />
-                <span>Cluster Facility Capacity & Preparedness Matrix</span>
+                <span>{t('clusterFacilityCapacity')}</span>
               </h3>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                Live bed occupancy, doctor on duty, and oxygen cylinders ready
+                {t('liveBedOccupancy')}
               </p>
             </div>
-            <span className="text-xs text-slate-500 font-mono">6 Centers</span>
+            <span className="text-xs text-slate-500 font-mono">6 {t('centers')}</span>
           </div>
 
           <div className="space-y-3">
@@ -209,11 +217,11 @@ export const SupervisorDashboard = () => {
               <div className="flex items-center gap-2">
                 <AlertTriangle className="w-4 h-4 text-amber-600" />
                 <h4 className="font-heading font-bold text-slate-900 dark:text-slate-100 text-sm">
-                  Critical Drug Stockouts in Cluster
+                  {t('criticalDrugStockouts')}
                 </h4>
               </div>
               <span className="text-[10px] font-bold text-rose-700 bg-rose-50 dark:bg-rose-950/60 px-2 py-0.5 rounded border border-rose-200 dark:border-rose-800">
-                Action Required
+                {t('actionRequired')}
               </span>
             </div>
 
@@ -239,7 +247,7 @@ export const SupervisorDashboard = () => {
                     className="w-full mt-1 py-1.5 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-teal-800 dark:text-teal-400 border border-slate-200 dark:border-slate-700 rounded-lg font-bold text-[11px] flex items-center justify-center gap-1 transition-colors"
                   >
                     <Share2 className="w-3 h-3" />
-                    <span>Authorize Transfer from PHC Shirwal</span>
+                    <span>{t('authorizeTransferFromPhc')}</span>
                   </button>
                 </div>
               ))}
@@ -251,13 +259,13 @@ export const SupervisorDashboard = () => {
             <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
               <h4 className="font-heading font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center gap-2">
                 <Users className="w-4 h-4 text-blue-600" />
-                <span>Cluster ASHA Mobilization Audit</span>
+                <span>{t('clusterAshaMobilizationAudit')}</span>
               </h4>
               <button
                 onClick={() => navigate('/asha')}
                 className="text-xs text-blue-600 dark:text-blue-400 font-semibold hover:underline"
               >
-                All Cadres →
+                {t('allCadres')} →
               </button>
             </div>
 
@@ -287,7 +295,7 @@ export const SupervisorDashboard = () => {
               <div className="flex items-center gap-2">
                 <Share2 className="w-5 h-5 text-teal-600" />
                 <h3 className="font-heading font-bold text-slate-900 dark:text-slate-100 text-base">
-                  Authorize Inter-Facility Drug Transfer
+                  {t('authorizeInterFacilityTransfer')}
                 </h3>
               </div>
               <button onClick={() => setRedistributeModal(false)} className="text-slate-400 hover:text-slate-600">
@@ -297,7 +305,7 @@ export const SupervisorDashboard = () => {
 
             <form onSubmit={handleConfirmTransfer} className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-600 dark:text-slate-300 font-semibold mb-1">Source Health Center (Surplus)</label>
+                <label className="block text-slate-600 dark:text-slate-300 font-semibold mb-1">{t('sourceHealthCenter')}</label>
                 <select
                   value={sourceFac}
                   onChange={e => setSourceFac(e.target.value)}
@@ -310,7 +318,7 @@ export const SupervisorDashboard = () => {
               </div>
 
               <div>
-                <label className="block text-slate-600 dark:text-slate-300 font-semibold mb-1">Destination Facility (Depleted)</label>
+                <label className="block text-slate-600 dark:text-slate-300 font-semibold mb-1">{t('destinationFacility')}</label>
                 <input
                   type="text"
                   value={targetFac}
@@ -320,7 +328,7 @@ export const SupervisorDashboard = () => {
               </div>
 
               <div>
-                <label className="block text-slate-600 dark:text-slate-300 font-semibold mb-1">Item & Quantity</label>
+                <label className="block text-slate-600 dark:text-slate-300 font-semibold mb-1">{t('itemAndQuantity')}</label>
                 <input
                   type="text"
                   value={drugToTransfer}
@@ -331,7 +339,7 @@ export const SupervisorDashboard = () => {
               </div>
 
               <div className="p-2.5 bg-blue-50 dark:bg-blue-950/40 rounded-lg text-[11px] text-blue-900 dark:text-blue-300">
-                Digital transfer voucher will be countersigned and dispatched via the Satara Rural Feeder Vehicle.
+                {t('digitalTransferVoucherText')}
               </div>
 
               <div className="pt-3 border-t dark:border-slate-800 flex justify-end gap-2 text-xs">
@@ -340,14 +348,14 @@ export const SupervisorDashboard = () => {
                   onClick={() => setRedistributeModal(false)}
                   className="px-3 py-1.5 rounded-lg border dark:border-slate-700 text-slate-600 dark:text-slate-300"
                 >
-                  Cancel
+                  {t('cancel')}
                 </button>
                 <button
                   type="submit"
                   className="px-4 py-1.5 rounded-lg bg-teal-700 hover:bg-teal-800 text-white font-semibold flex items-center gap-1.5"
                 >
                   <CheckCircle2 className="w-3.5 h-3.5" />
-                  <span>Authorize & Dispatch Delivery</span>
+                  <span>{t('authorizeDispatchDelivery')}</span>
                 </button>
               </div>
             </form>
