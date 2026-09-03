@@ -143,6 +143,35 @@ export const AppProvider = ({ children }) => {
     syncBackendData();
   }, []);
 
+  // Sync initial vitals from localStorage if present
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('sih_demo_patient_vitals');
+      if (saved) {
+        const data = JSON.parse(saved);
+        const targetId = data.patientId || "PAT-001";
+        setPatients(prev => prev.map(p => {
+          if (p.id === targetId || (data.patientName && p.name.toLowerCase().includes(data.patientName.toLowerCase()))) {
+            return {
+              ...p,
+              latestVitals: {
+                ...p.latestVitals,
+                bp: data.bp ? (data.bp.includes('mmHg') ? data.bp : `${data.bp} mmHg`) : p.latestVitals.bp,
+                bloodSugar: data.sugar || data.bloodSugar ? (String(data.sugar || data.bloodSugar).includes('mg/dL') ? `${data.sugar || data.bloodSugar}` : `${data.sugar || data.bloodSugar} mg/dL`) : p.latestVitals.bloodSugar,
+                pulse: data.pulse ? (String(data.pulse).includes('bpm') ? `${data.pulse}` : `${data.pulse} bpm`) : p.latestVitals.pulse,
+                temp: data.temp ? (String(data.temp).includes('°F') ? `${data.temp}` : `${data.temp} °F`) : p.latestVitals.temp,
+                recordedAt: data.recordedAt || `Today by ASHA Sunita (Offline Synced)`
+              }
+            };
+          }
+          return p;
+        }));
+      }
+    } catch (err) {
+      console.error('Failed to sync initial localStorage vitals in AppContext:', err);
+    }
+  }, []);
+
   // Teleconsultation timer
   useEffect(() => {
     let interval = null;

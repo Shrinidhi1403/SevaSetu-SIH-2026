@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApp } from '../../context/AppContext';
 import { StatCard } from '../../components/StatCard';
 import { Badge } from '../../components/Badge';
@@ -47,6 +47,41 @@ export const SupervisorDashboard = () => {
   const [sourceFac, setSourceFac] = useState("PHC Shirwal");
   const [targetFac, setTargetFac] = useState("Sub-Center Velhe");
   const [drugToTransfer, setDrugToTransfer] = useState("Oral Rehydration Salts (WHO formula) - 150 Sachets");
+
+  // Vitals sync state from localStorage
+  const [doorstepCoveredPct, setDoorstepCoveredPct] = useState("89.3%");
+  const [householdsCovered, setHouseholdsCovered] = useState("983/1,100");
+  const [ashaList, setAshaList] = useState(ashaWorkers);
+  const [syncedVitalsData, setSyncedVitalsData] = useState(null);
+
+  useEffect(() => {
+    const checkSyncedVitals = () => {
+      const savedVitals = localStorage.getItem('sih_demo_patient_vitals');
+      if (savedVitals) {
+        try {
+          const data = JSON.parse(savedVitals);
+          setSyncedVitalsData(data);
+          setDoorstepCoveredPct("90.4%");
+          setHouseholdsCovered("984/1,100");
+          setAshaList(prev => prev.map(w =>
+            w.name.includes("Sunita") || w.name.includes("Kamble")
+              ? {
+                  ...w,
+                  householdsVisitedMonth: w.householdsVisitedMonth + 1,
+                  visitTargetPct: Math.min(100, w.visitTargetPct + 1)
+                }
+              : w
+          ));
+        } catch (err) {
+          console.error("Error reading sih_demo_patient_vitals in SupervisorDashboard:", err);
+        }
+      }
+    };
+
+    checkSyncedVitals();
+    window.addEventListener('storage', checkSyncedVitals);
+    return () => window.removeEventListener('storage', checkSyncedVitals);
+  }, []);
 
   const totalBeds = facilities.reduce((a, f) => a + f.bedsTotal, 0);
   const occupiedBeds = facilities.reduce((a, f) => a + f.bedsOccupied, 0);
@@ -140,10 +175,10 @@ export const SupervisorDashboard = () => {
 
         <StatCard
           title={t('ashaFieldDoorstepTarget')}
-          value={targetValue}
-          subtitle={language === 'en' ? '983/1,100 Households Covered' : '९८३/१,१०० घर कवर'}
+          value={doorstepCoveredPct}
+          subtitle={`${householdsCovered} Households Covered`}
           icon={Users}
-          trend={language === 'en' ? '+5.1% vs last month' : '+५.१% पिछले महीने की तुलना में'}
+          trend={syncedVitalsData ? "+6.2% (Offline Synced)" : (language === 'en' ? '+5.1% vs last month' : '+५.१% पिछले महीने की तुलना में')}
           trendType="positive"
           variant="blue"
         />
@@ -269,8 +304,30 @@ export const SupervisorDashboard = () => {
               </button>
             </div>
 
+            {syncedVitalsData && (
+              <div className="p-3 bg-teal-50 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-800 rounded-xl text-xs space-y-1">
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-teal-900 dark:text-teal-200 flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
+                    Offline Doorstep Vitals Synced
+                  </span>
+                  <span className="text-[10px] text-teal-700 dark:text-teal-400 font-mono">
+                    {syncedVitalsData.timestamp || 'Just now'}
+                  </span>
+                </div>
+                <div className="text-slate-700 dark:text-slate-300">
+                  Beneficiary: <span className="font-semibold">{syncedVitalsData.patientName}</span> • BP: <span className="font-semibold">{syncedVitalsData.bp}</span> • Sugar: <span className="font-semibold">{syncedVitalsData.sugar || syncedVitalsData.bloodSugar} mg/dL</span>
+                </div>
+                {syncedVitalsData.notes && (
+                  <div className="text-[11px] text-slate-500 dark:text-slate-400 italic">
+                    ASHA Field Note: "{syncedVitalsData.notes}"
+                  </div>
+                )}
+              </div>
+            )}
+
             <div className="space-y-2 text-xs">
-              {ashaWorkers.map((w) => (
+              {ashaList.map((w) => (
                 <div key={w.id} className="p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-lg flex items-center justify-between">
                   <div>
                     <div className="font-bold text-slate-900 dark:text-slate-100">{w.name}</div>

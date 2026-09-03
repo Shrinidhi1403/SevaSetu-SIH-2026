@@ -63,6 +63,58 @@ export const PatientDashboard = () => {
   // Active patient object
   const patient = patients.find(p => p.id === selectedPatientId) || selectedPatient || patients[0];
 
+  // Local reactive vitals state synced from patient / localStorage
+  const [activeVitals, setActiveVitals] = useState(patient?.latestVitals || {});
+
+  useEffect(() => {
+    if (patient?.latestVitals) {
+      setActiveVitals(patient.latestVitals);
+    }
+  }, [patient]);
+
+  useEffect(() => {
+    const checkSyncedVitals = () => {
+      const savedVitals = localStorage.getItem('sih_demo_patient_vitals');
+      if (savedVitals) {
+        try {
+          const data = JSON.parse(savedVitals);
+          const bpSys = parseInt(data.bp?.split('/')[0] || data.sys || 120);
+          const sugarVal = parseInt(data.sugar || data.bloodSugar || 115);
+
+          setActiveVitals(prev => ({
+            ...prev,
+            bp: data.bp ? (data.bp.includes('mmHg') ? data.bp : `${data.bp} mmHg`) : prev.bp,
+            bpStatus: bpSys > 140 ? 'high' : 'normal',
+            bloodSugar: data.sugar || data.bloodSugar
+              ? `${data.sugar || data.bloodSugar} mg/dL (Doorstep)`
+              : prev.bloodSugar,
+            bloodSugarStatus: sugarVal > 140 ? 'high' : 'normal',
+            pulse: data.pulse ? (data.pulse.includes('bpm') ? data.pulse : `${data.pulse} bpm`) : prev.pulse,
+            pulseStatus: 'normal',
+            temp: data.temp ? (data.temp.includes('°F') ? data.temp : `${data.temp} °F`) : prev.temp,
+            spo2: data.spo2 || prev.spo2 || "98%",
+            recordedAt: data.recordedAt || `Today, ${data.timestamp || '09:45 AM'} by ASHA Sunita (Offline Synced)`
+          }));
+
+          if (updatePatientVitals && (data.patientId || patient?.id)) {
+            updatePatientVitals(data.patientId || patient?.id, {
+              bp: data.bp ? `${data.bp} mmHg` : undefined,
+              bloodSugar: data.sugar || data.bloodSugar ? `${data.sugar || data.bloodSugar} mg/dL` : undefined,
+              pulse: data.pulse ? `${data.pulse} bpm` : undefined,
+              temp: data.temp ? `${data.temp} °F` : undefined
+            });
+          }
+        } catch (err) {
+          console.error('Error parsing sih_demo_patient_vitals in PatientDashboard:', err);
+        }
+      }
+    };
+
+    checkSyncedVitals();
+    window.addEventListener('storage', checkSyncedVitals);
+    return () => window.removeEventListener('storage', checkSyncedVitals);
+  }, [patient?.id]);
+
   // Local interactive modals
   const [showAbhaModal, setShowAbhaModal] = useState(false);
   const [showLogVitalsModal, setShowLogVitalsModal] = useState(false);
@@ -230,15 +282,18 @@ export const PatientDashboard = () => {
   // Submit vitals logged by patient/family
   const handleSaveVitals = (e) => {
     e.preventDefault();
-    updatePatientVitals(patient.id, {
+    const updated = {
       bp: `${vitalsForm.sys}/${vitalsForm.dia} mmHg`,
       bpStatus: parseInt(vitalsForm.sys) > 140 ? 'high' : 'normal',
       bloodSugar: `${vitalsForm.sugar} mg/dL`,
       bloodSugarStatus: parseInt(vitalsForm.sugar) > 180 ? 'high' : 'normal',
       pulse: `${vitalsForm.pulse} bpm`,
       spo2: `${vitalsForm.spo2}%`,
-      temp: "98.6 °F"
-    });
+      temp: "98.6 °F",
+      recordedAt: `Today, ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
+    };
+    setActiveVitals(prev => ({ ...prev, ...updated }));
+    updatePatientVitals(patient.id, updated);
     setShowLogVitalsModal(false);
     notify(
       language === 'mr' ? "आरोग्य तपासणी नोंदवली" : language === 'hi' ? "स्वास्थ्य माप सुरक्षित" : "Vitals Recorded",
@@ -479,7 +534,7 @@ export const PatientDashboard = () => {
             <span>{t('vitalSigns')}</span>
           </h3>
           <span className="text-xs text-slate-500 dark:text-slate-400">
-            {t('lastChecked')}: {patient.latestVitals?.recordedAt || "Today 09:45 AM"}
+            {t('lastChecked')}: {activeVitals?.recordedAt || "Today 09:45 AM"}
           </span>
         </div>
 
@@ -489,17 +544,17 @@ export const PatientDashboard = () => {
             <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
               <span className="font-semibold">{t('bloodPressure')}</span>
               <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
-                patient.latestVitals.bpStatus === 'critical' || patient.latestVitals.bpStatus === 'high'
+                activeVitals?.bpStatus === 'critical' || activeVitals?.bpStatus === 'high'
                   ? 'bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-300'
                   : 'bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300'
               }`}>
-                {patient.latestVitals.bpStatus === 'high' ? t('statusElevated') : t('statusNormal')}
+                {activeVitals?.bpStatus === 'high' ? t('statusElevated') : t('statusNormal')}
               </span>
             </div>
 
             <div className="mt-2 flex items-baseline gap-2">
               <span className="font-heading font-extrabold text-2xl sm:text-3xl text-slate-900 dark:text-slate-100">
-                {num(patient.latestVitals.bp)}
+                {num(activeVitals?.bp || "120/80 mmHg")}
               </span>
             </div>
 
@@ -514,17 +569,17 @@ export const PatientDashboard = () => {
             <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
               <span className="font-semibold">{t('bloodSugar')}</span>
               <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
-                patient.latestVitals.bloodSugarStatus === 'high'
+                activeVitals?.bloodSugarStatus === 'high'
                   ? 'bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300'
                   : 'bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300'
               }`}>
-                {patient.latestVitals.bloodSugarStatus === 'high' ? t('statusElevated') : t('statusNormal')}
+                {activeVitals?.bloodSugarStatus === 'high' ? t('statusElevated') : t('statusNormal')}
               </span>
             </div>
 
             <div className="mt-2 flex items-baseline gap-2">
               <span className="font-heading font-extrabold text-2xl sm:text-3xl text-slate-900 dark:text-slate-100">
-                {num(patient.latestVitals.bloodSugar)}
+                {num(activeVitals?.bloodSugar || "115 mg/dL")}
               </span>
             </div>
 
@@ -545,7 +600,7 @@ export const PatientDashboard = () => {
 
             <div className="mt-2 flex items-baseline gap-2">
               <span className="font-heading font-extrabold text-2xl sm:text-3xl text-slate-900 dark:text-slate-100">
-                {num(patient.latestVitals.pulse)}
+                {num(activeVitals?.pulse || "76 bpm")}
               </span>
               <Activity className="w-5 h-5 text-rose-500 animate-pulse inline-block" />
             </div>
@@ -561,13 +616,13 @@ export const PatientDashboard = () => {
             <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
               <span className="font-semibold">{t('oxygenLevel')}</span>
               <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">
-                {num(patient.latestVitals.spo2)} {t('statusSafe')}
+                {num(activeVitals?.spo2 || "98%")} {t('statusSafe')}
               </span>
             </div>
 
             <div className="mt-2 flex items-baseline gap-2">
               <span className="font-heading font-extrabold text-2xl sm:text-3xl text-slate-900 dark:text-slate-100">
-                {num(patient.latestVitals.spo2)}
+                {num(activeVitals?.spo2 || "98%")}
               </span>
             </div>
 

@@ -29,6 +29,7 @@ export const AshaDashboard = () => {
     currentUser,
     patients,
     setSelectedPatientId,
+    updatePatientVitals,
     logAshaVisit,
     notify,
     language,
@@ -121,11 +122,57 @@ export const AshaDashboard = () => {
   const handleSubmitVisit = (e) => {
     e.preventDefault();
     if (selectedTask) {
+      // Resolve patient from context or fallback to default
+      const matchedPatient = patients?.find(p =>
+        p.name.toLowerCase().includes(selectedTask.beneficiary.toLowerCase()) ||
+        selectedTask.beneficiary.toLowerCase().includes(p.name.toLowerCase())
+      );
+      const targetPatientId = matchedPatient ? matchedPatient.id : "PAT-001";
+
+      const vitalsData = {
+        patientName: selectedTask.beneficiary,
+        patientId: targetPatientId,
+        bp: vitalsInput.bp,
+        sugar: vitalsInput.sugar,
+        bloodSugar: vitalsInput.sugar,
+        pulse: vitalsInput.pulse,
+        temp: vitalsInput.temp,
+        spo2: "98%",
+        notes: visitNotes,
+        category: selectedTask.category,
+        priority: selectedTask.priority,
+        triagePriority: selectedTask.priority,
+        village: selectedTask.village,
+        recordedAt: `Today, ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} by ASHA Sunita`,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+
+      try {
+        localStorage.setItem('sih_demo_patient_vitals', JSON.stringify(vitalsData));
+      } catch (err) {
+        console.error('Failed to save doorstep vitals to localStorage:', err);
+      }
+
+      if (updatePatientVitals) {
+        updatePatientVitals(targetPatientId, {
+          bp: `${vitalsInput.bp} mmHg`,
+          bloodSugar: `${vitalsInput.sugar} mg/dL`,
+          pulse: `${vitalsInput.pulse} bpm`,
+          temp: `${vitalsInput.temp} °F`
+        });
+      }
+
       logAshaVisit(
         selectedTask.beneficiary,
         "Shirwal West (Cluster 4)",
         `BP: ${vitalsInput.bp} mmHg, Sugar: ${vitalsInput.sugar} mg/dL, Temp: ${vitalsInput.temp} °F. ${visitNotes}`
       );
+
+      setOfflineRecordsCount(prev => prev + 1);
+
+      // Brief alert or toast saying 'Data saved locally for offline sync'
+      notify("Offline Sync", "Data saved locally for offline sync", "success");
+
       setShowVisitModal(false);
     }
   };

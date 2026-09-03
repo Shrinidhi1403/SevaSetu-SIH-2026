@@ -27,6 +27,8 @@ export const AshaFieldOverviewPage = () => {
     ashaWorkers,
     fieldUploads,
     outreachEvents,
+    patients,
+    updatePatientVitals,
     logAshaVisit,
     notify,
     currentUser,
@@ -51,7 +53,47 @@ export const AshaFieldOverviewPage = () => {
   const handleCreateVisit = (e) => {
     e.preventDefault();
     if (!visitForm.patientName) return;
+
+    const matchedPatient = patients?.find(p =>
+      p.name.toLowerCase().includes(visitForm.patientName.toLowerCase()) ||
+      visitForm.patientName.toLowerCase().includes(p.name.toLowerCase())
+    );
+    const targetPatientId = matchedPatient ? matchedPatient.id : "PAT-001";
+
+    const vitalsData = {
+      patientName: visitForm.patientName,
+      patientId: targetPatientId,
+      bp: "120/80",
+      sugar: "115",
+      bloodSugar: "115",
+      pulse: "78",
+      temp: "98.6",
+      spo2: "98%",
+      notes: visitForm.vitalsSummary,
+      triagePriority: "Routine",
+      category: "Doorstep Field Screening",
+      recordedAt: `Today, ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} by ASHA Sunita`,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+
+    try {
+      localStorage.setItem('sih_demo_patient_vitals', JSON.stringify(vitalsData));
+    } catch (err) {
+      console.error('Failed to save doorstep vitals to localStorage:', err);
+    }
+
+    if (updatePatientVitals) {
+      updatePatientVitals(targetPatientId, {
+        bp: "120/80 mmHg",
+        bloodSugar: "115 mg/dL",
+        pulse: "78 bpm",
+        temp: "98.6 °F"
+      });
+    }
+
     logAshaVisit(visitForm.patientName, visitForm.cluster, visitForm.vitalsSummary);
+    notify("Offline Sync", "Data saved locally for offline sync", "success");
+
     setShowLogVisitModal(false);
     setVisitForm({
       patientName: "",

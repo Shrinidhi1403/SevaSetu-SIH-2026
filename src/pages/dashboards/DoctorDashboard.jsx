@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApp } from '../../context/AppContext';
 import { StatCard } from '../../components/StatCard';
 import { Badge } from '../../components/Badge';
@@ -40,7 +40,7 @@ export const DoctorDashboard = () => {
 
   const [opdFilter, setOpdFilter] = useState('all');
 
-  const todayAppointments = [
+  const [appointments, setAppointments] = useState([
     {
       time: "11:30 AM",
       patient: patients[0],
@@ -73,9 +73,10 @@ export const DoctorDashboard = () => {
       status: "Scheduled",
       priority: "normal"
     }
-  ];
+  ]);
 
-  const vitalsAlerts = [
+  // Critical vitals alerts state
+  const [vitalsAlertList, setVitalsAlertList] = useState([
     {
       patient: "Ramesh Shantaram Patil",
       alert: "Random Blood Sugar 234 mg/dL",
@@ -94,7 +95,58 @@ export const DoctorDashboard = () => {
       recorded: "Today 11:10 AM Kikvi Center",
       action: "Cath Lab Satara DH Dispatched"
     }
-  ];
+  ]);
+
+  const [syncedVitalsData, setSyncedVitalsData] = useState(null);
+
+  // Sync vitals from offline ASHA doorstep submissions
+  useEffect(() => {
+    const checkSyncedVitals = () => {
+      const savedVitals = localStorage.getItem('sih_demo_patient_vitals');
+      if (savedVitals) {
+        try {
+          const data = JSON.parse(savedVitals);
+          setSyncedVitalsData(data);
+
+          const bpText = data.bp ? `BP: ${data.bp}` : '';
+          const sugarText = data.sugar || data.bloodSugar ? `Sugar: ${data.sugar || data.bloodSugar} mg/dL` : '';
+          const pulseText = data.pulse ? `Pulse: ${data.pulse} bpm` : '';
+          const tempText = data.temp ? `Temp: ${data.temp} °F` : '';
+          const vitalsSummary = [bpText, sugarText, pulseText, tempText].filter(Boolean).join(' • ');
+
+          const newAlert = {
+            patient: data.patientName || "Ramesh Shantaram Patil",
+            alert: `Doorstep Vitals: ${vitalsSummary || "Vitals Logged"}`,
+            recorded: data.recordedAt || `Today ${data.timestamp || 'Just now'} by ASHA Sunita (Offline Synced)`,
+            action: data.notes ? `ASHA Note: ${data.notes}` : "Doorstep Vitals Synced - Review Clinical Protocol"
+          };
+
+          setVitalsAlertList(prev => {
+            const filtered = prev.filter(a => a.patient !== newAlert.patient);
+            return [newAlert, ...filtered];
+          });
+
+          setAppointments(prev => prev.map(apt => {
+            const aptPatientName = apt.patient?.name?.toLowerCase() || '';
+            const incomingName = (data.patientName || '').toLowerCase();
+            if (aptPatientName && incomingName && (aptPatientName.includes(incomingName) || incomingName.includes(aptPatientName))) {
+              return {
+                ...apt,
+                reason: `Doorstep Vitals Synced (BP: ${data.bp || '120/80'}, Sugar: ${data.sugar || '115'} mg/dL)`
+              };
+            }
+            return apt;
+          }));
+        } catch (err) {
+          console.error("Error parsing sih_demo_patient_vitals in DoctorDashboard:", err);
+        }
+      }
+    };
+
+    checkSyncedVitals();
+    window.addEventListener('storage', checkSyncedVitals);
+    return () => window.removeEventListener('storage', checkSyncedVitals);
+  }, []);
 
   return (
     <div className="space-y-6">
@@ -197,12 +249,12 @@ export const DoctorDashboard = () => {
               </div>
 
               <span className="text-xs font-semibold text-teal-700 dark:text-teal-400 bg-teal-50 dark:bg-teal-950/60 px-2.5 py-1 rounded-lg border border-teal-200 dark:border-teal-800">
-                {num(4)} {t('sessions')}
+                {num(appointments.length)} {t('sessions')}
               </span>
             </div>
 
             <div className="divide-y divide-slate-100 dark:divide-slate-800 p-2">
-              {todayAppointments.map((apt, idx) => (
+              {appointments.map((apt, idx) => (
                 <div
                   key={idx}
                   className="p-3 sm:p-4 hover:bg-slate-50 dark:hover:bg-slate-800/60 rounded-xl transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs"
@@ -215,10 +267,10 @@ export const DoctorDashboard = () => {
                     <div>
                       <div className="flex items-center gap-2">
                         <span className="font-bold text-slate-900 dark:text-slate-100 text-sm">
-                          {locName(apt.patient.name)}
+                          {locName(apt.patient?.name || "Patient")}
                         </span>
                         <span className="text-[10px] text-slate-500">
-                          ({apt.patient.age}y, {apt.patient.gender})
+                          ({apt.patient?.age || "50"}y, {apt.patient?.gender || "M"})
                         </span>
                         <Badge
                           status={apt.priority === 'critical' ? 'critical' : apt.priority === 'urgent' ? 'strained' : 'optimal'}
@@ -233,7 +285,7 @@ export const DoctorDashboard = () => {
                       </div>
 
                       <div className="text-[10px] text-slate-500 font-mono mt-0.5">
-                        ABHA: {apt.patient.abhaId} • Sub-center: {apt.patient.primaryPhc}
+                        ABHA: {apt.patient?.abhaId || "14-8921-4432-9018"} • Sub-center: {apt.patient?.primaryPhc || "PHC Shirwal"}
                       </div>
                     </div>
                   </div>
@@ -241,7 +293,7 @@ export const DoctorDashboard = () => {
                   <div className="flex items-center gap-2 shrink-0">
                     <button
                       onClick={() => {
-                        setSelectedPatientId(apt.patient.id);
+                        if (apt.patient?.id) setSelectedPatientId(apt.patient.id);
                         navigate('/patients');
                       }}
                       className="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 font-medium"
@@ -251,7 +303,7 @@ export const DoctorDashboard = () => {
 
                     <button
                       onClick={() => {
-                        setSelectedPatientId(apt.patient.id);
+                        if (apt.patient?.id) setSelectedPatientId(apt.patient.id);
                         navigate('/teleconsult');
                       }}
                       className="px-3 py-1.5 rounded-lg bg-teal-700 hover:bg-teal-800 text-white font-semibold flex items-center gap-1.5 shadow-xs"
@@ -291,7 +343,7 @@ export const DoctorDashboard = () => {
             </div>
 
             <div className="space-y-2.5">
-              {vitalsAlerts.map((va, idx) => (
+              {vitalsAlertList.map((va, idx) => (
                 <div
                   key={idx}
                   className="p-3 bg-rose-50/40 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-800/60 rounded-xl text-xs space-y-1"
